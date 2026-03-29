@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 0a: C-I-O Responsiveness Annotation | EU0214_8</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--brd:#e2e8f0;--txt:#1e293b;--mut:#64748b;--acc:#7c3aed;--accl:#ede9fe;--grn:#16a34a;--warn:#f59e0b;--warnl:#fef3c7;--blue:#3b82f6;--bluel:#dbeafe;--rose:#ffe4e6;--green:#dcfce7;--amber:#fef3c7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;overflow:hidden;height:100vh}
+.shell{display:grid;grid-template-columns:45% 55%;height:100vh}
+/* LEFT PANEL */
+.lp{height:100vh;overflow-y:auto;border-right:2px solid var(--brd);background:#fff;padding:0}
+.lp-head{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--brd);padding:.5rem .7rem}
+.lp-head h1{font-size:.95rem;font-weight:700;margin-bottom:.2rem}
+.lp-head .sub{font-size:.72rem;color:var(--mut)}
+.seg-tabs{display:flex;gap:.25rem;margin-top:.4rem}
+.seg-tabs button{padding:.2rem .6rem;border:1px solid var(--brd);border-radius:6px;background:#fff;cursor:pointer;font-size:.72rem;color:var(--mut);font-weight:500}
+.seg-tabs button:hover{border-color:var(--acc);color:var(--acc)}
+.seg-tabs button.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.domain-filters{display:flex;gap:.2rem;margin-top:.3rem;flex-wrap:wrap}
+.domain-filters button{padding:.15rem .4rem;border:1px solid var(--brd);border-radius:4px;background:#fff;cursor:pointer;font-size:.62rem;font-weight:600;transition:all .15s}
+.domain-filters button.active{font-weight:700;color:#fff}
+.df-all.active{background:var(--mut);border-color:var(--mut)}
+.df-a.active{background:#d97706;border-color:#d97706}
+.df-b.active{background:#16a34a;border-color:#16a34a}
+.df-c.active{background:#2563eb;border-color:#2563eb}
+.df-d.active{background:#7c3aed;border-color:#7c3aed}
+.df-t.active{background:#e11d48;border-color:#e11d48}
+/* MIND TABLE */
+.mind-tbl-wrap{padding:.4rem .7rem;border-bottom:1px solid var(--brd);background:#f8fafc}
+.mind-tbl-toggle{font-size:.72rem;font-weight:600;cursor:pointer;color:var(--acc);padding:.2rem 0;user-select:none}
+.mind-tbl{width:100%;border-collapse:collapse;font-size:.68rem;margin-top:.3rem}
+.mind-tbl th{background:#f1f5f9;font-weight:600;padding:.2rem .3rem;text-align:left;border:1px solid var(--brd);white-space:nowrap}
+.mind-tbl td{padding:.15rem .3rem;border:1px solid var(--brd);font-size:.66rem;vertical-align:top}
+.mind-tbl .arr-up{color:#16a34a;font-weight:700}
+.mind-tbl .arr-dn{color:#dc2626;font-weight:700}
+.mind-tbl .arr-new{color:#2563eb;font-size:.6rem}
+.mind-tbl .arr-gone{color:var(--mut);font-style:italic;font-size:.6rem}
+/* TRANSCRIPT */
+.tx-wrap{padding:.5rem .7rem}
+.seg-header{display:flex;align-items:center;gap:.5rem;margin-top:.6rem;margin-bottom:.3rem;padding:.3rem .5rem;background:#f1f5f9;border-radius:6px;font-size:.78rem;font-weight:600}
+.seg-header:first-child{margin-top:0}
+.mlo-badge{font-size:.62rem;background:var(--accl);color:var(--acc);padding:.1rem .35rem;border-radius:4px;font-weight:600}
+.self-state{font-size:.7rem;color:var(--mut);line-height:1.4;margin-bottom:.4rem;padding:.3rem .5rem;background:#fafafa;border-radius:4px;border-left:2px solid var(--brd)}
+.turn{margin-bottom:.3rem;padding:.25rem .5rem;border-radius:4px;font-size:.78rem;line-height:1.55}
+.turn-t{border-left:3px solid var(--acc);background:#faf5ff}
+.turn-c{border-left:3px solid #94a3b8;background:transparent}
+.turn-a{border-left:3px solid #d4d4d4;background:#fafafa;font-style:italic;color:var(--mut)}
+.turn .speaker{font-weight:700;font-size:.7rem;color:var(--mut);margin-right:.3rem}
+.ev{border-radius:2px;padding:0 1px;cursor:help;position:relative}
+.ev-a{background:var(--amber)}
+.ev-b{background:var(--green)}
+.ev-c{background:var(--bluel)}
+.ev-d{background:var(--accl)}
+.ev-t{background:var(--rose)}
+.ev-tip{display:none;position:absolute;bottom:100%;left:0;background:#1e293b;color:#fff;padding:.25rem .4rem;border-radius:4px;font-size:.62rem;white-space:nowrap;z-index:20;pointer-events:none}
+.ev:hover .ev-tip{display:block}
+.ctx-box{margin:.5rem .7rem;padding:.5rem;background:#fafafa;border:1px solid var(--brd);border-radius:6px}
+.ctx-toggle{font-size:.72rem;font-weight:600;cursor:pointer;color:var(--mut);padding:.15rem 0}
+.ctx-content{font-size:.75rem;line-height:1.5;margin-top:.3rem}
+/* CITE TOOLTIP */
+#cite-tip{display:none;position:fixed;z-index:100;background:var(--acc);color:#fff;padding:.25rem .5rem;border-radius:6px;font-size:.7rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#cite-tip:hover{background:#6d28d9}
+/* RIGHT PANEL */
+.rp{height:100vh;overflow-y:auto;padding:1rem 1.2rem;background:var(--bg)}
+.step{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:1rem;margin-bottom:.8rem}
+.step h2{font-size:.9rem;font-weight:700;margin-bottom:.15rem;display:flex;align-items:center;gap:.4rem}
+.sn{display:inline-flex;align-items:center;justify-content:center;width:1.35rem;height:1.35rem;background:var(--acc);color:#fff;border-radius:50%;font-size:.62rem;font-weight:700;flex-shrink:0}
+.step .sub{color:var(--mut);font-size:.74rem;margin-bottom:.5rem}
+.hint{background:var(--warnl);border-left:3px solid var(--warn);padding:.4rem .6rem;border-radius:0 6px 6px 0;font-size:.74rem;margin-bottom:.5rem}
+label{display:block;font-weight:600;font-size:.78rem;margin-bottom:.15rem;margin-top:.6rem}
+textarea{width:100%;border:1px solid var(--brd);border-radius:6px;padding:.4rem;font-family:inherit;font-size:.78rem;resize:vertical;min-height:55px;transition:border-color .2s}
+textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 2px var(--accl)}
+textarea.sm{min-height:36px}
+input[type=text]{border:1px solid var(--brd);border-radius:6px;padding:.3rem .5rem;font-family:inherit;font-size:.78rem}
+input[type=text]:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 2px var(--accl)}
+/* BUTTON GROUPS */
+.bg{display:flex;gap:.2rem;flex-wrap:wrap;margin-top:.2rem}
+.bg button{padding:.25rem .45rem;border:1.5px solid var(--brd);border-radius:5px;background:#fff;cursor:pointer;font-size:.68rem;transition:all .12s;color:var(--txt)}
+.bg button:hover{border-color:var(--acc);color:var(--acc)}
+.bg button.sel{border-color:var(--acc);background:var(--accl);font-weight:600;color:var(--acc)}
+/* TAG GRID (multi-select) */
+.tg{display:flex;gap:.2rem;flex-wrap:wrap;margin-top:.2rem}
+.tg button{padding:.2rem .4rem;border:1.5px solid var(--brd);border-radius:4px;background:#fff;cursor:pointer;font-size:.65rem;transition:all .12s}
+.tg button:hover{border-color:var(--acc)}
+.tg button.sel{border-color:var(--acc);background:var(--accl);font-weight:600;color:var(--acc)}
+/* RATING BUTTONS (1-5) */
+.rc{display:flex;gap:.2rem;margin-top:.15rem}
+.rb{flex:0;min-width:36px;padding:.3rem .15rem;border:1.5px solid var(--brd);border-radius:6px;background:#fff;cursor:pointer;text-align:center;transition:all .15s}
+.rb:hover{border-color:var(--acc)}.rb.sel{border-color:var(--acc);background:var(--accl)}
+.rb .sc{font-size:.85rem;font-weight:700}.rb .lb{font-size:.5rem;color:var(--mut);display:block}
+/* SEGMENT EVAL */
+.seg-eval{border:1px solid var(--brd);border-radius:8px;padding:.7rem;margin-bottom:.5rem;background:#fafafa}
+.seg-eval h3{font-size:.82rem;font-weight:700;color:var(--acc);cursor:pointer;margin-bottom:.3rem}
+.seg-eval h3:hover{text-decoration:underline}
+.ratings-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem;align-items:flex-start}
+.ratings-row>div{min-width:70px}
+.ratings-row label{font-size:.68rem;margin-top:0;margin-bottom:.1rem}
+/* MOVEMENT ROW */
+.mov-row{border:1px solid var(--brd);border-radius:6px;padding:.5rem;margin-bottom:.4rem;background:#fff}
+.mov-row-head{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+.mov-remove{font-size:.65rem;color:var(--mut);cursor:pointer;margin-left:auto}
+.mov-remove:hover{color:#dc2626}
+/* SCORE TABLE */
+.score-tbl{width:100%;border-collapse:collapse;font-size:.7rem;margin:.3rem 0}
+.score-tbl td,.score-tbl th{border:1px solid var(--brd);padding:.2rem .35rem;text-align:left}
+.score-tbl th{background:#f1f5f9;font-weight:700;width:28px;text-align:center}
+/* COMPUTED SCORE */
+.computed-score-box{background:#f8fafc;border:1px solid var(--brd);border-radius:6px;padding:.6rem .7rem;margin:.5rem 0}
+.cs-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.cs-label{font-size:.72rem;font-weight:600;color:#475569}
+.cs-val{font-size:1.1rem;font-weight:700;color:#3b82f6;min-width:2rem;text-align:center}
+.cs-breakdown{font-size:.65rem;color:#94a3b8}
+.cs-override{font-size:.65rem;color:#b45309;font-weight:600;display:none}
+/* SUMMARY STRIP */
+.summary-strip{position:sticky;bottom:0;background:#fff;border-top:2px solid var(--brd);padding:.35rem .7rem;font-size:.68rem;color:var(--mut);z-index:5;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.summary-strip .ss-item{padding:.15rem .35rem;background:#f1f5f9;border-radius:4px;font-weight:500}
+.summary-strip .ss-score{background:var(--accl);color:var(--acc);font-weight:700}
+/* EXPORT */
+.exp-btn{padding:.5rem .8rem;background:var(--acc);color:#fff;border:none;border-radius:8px;font-size:.8rem;font-weight:600;cursor:pointer}
+.exp-btn:hover{opacity:.9}
+.save-status{font-size:.65rem;color:var(--grn);min-height:1em}
+details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0}
+</style></head>
+<body>
+<div id="cite-tip" onclick="doCite()">Cite</div>
+<div class="shell">
+<!-- LEFT PANEL -->
+<div class="lp" id="lp">
+<div class="lp-head">
+<h1>EU0214, Session 8</h1>
+<div class="sub">Working Phase (3 segments) | Patient: young woman, MDD, relational struggles with partner</div>
+<div class="seg-tabs" id="seg-tabs">
+<button class="active" onclick="showSeg('all',this)">All</button>
+<button onclick="showSeg(1,this)">Seg 1</button>
+<button onclick="showSeg(2,this)">Seg 2</button>
+<button onclick="showSeg(3,this)">Seg 3</button>
+</div>
+<div class="domain-filters">
+<button class="df-all active" onclick="toggleDomain('all',this)">All</button>
+<button class="df-a active" onclick="toggleDomain('a',this)">Affect</button>
+<button class="df-b active" onclick="toggleDomain('b',this)">Behav</button>
+<button class="df-c active" onclick="toggleDomain('c',this)">Cog</button>
+<button class="df-d active" onclick="toggleDomain('d',this)">Desire</button>
+<button class="df-t active" onclick="toggleDomain('t',this)">Ther</button>
+</div>
+</div>
+<!-- CONTEXT (read first) -->
+<div class="ctx-box" style="margin-top:.3rem">
+<details open>
+<summary class="ctx-toggle">Context before working phase (read first)</summary>
+<div class="ctx-content">The session begins with a brief breathing/relaxation exercise. The client reports feeling better than one or two weeks ago, though the week was emotionally intense. She describes escalating frustration with her partner over his gaming addiction: he plays compulsively, does not help around the house, breaks promises, falls asleep during a movie, yells at her during a game at 1am. Multiple nights not sleeping together. She started looking at alternative living arrangements. The therapist observes the client seems very controlled and composed despite describing a very difficult situation. The client confirms her anger has given way to disappointment and apathy. A turning point: he said he would not care if she slept with someone else, which she experienced as a sign he does not value the relationship.</div>
+</details>
+</div>
+<!-- MIND TABLE -->
+<div class="mind-tbl-wrap" id="mind-tbl-wrap">
+<div class="mind-tbl-toggle" onclick="this.parentElement.classList.toggle('collapsed')">MIND Comparison Table</div>
+<div id="mind-tbl-content"><!-- filled by JS --></div>
+</div>
+<!-- TRANSCRIPT -->
+<div class="tx-wrap" id="tx-wrap"><!-- filled by JS --></div>
+</div>
+<!-- RIGHT PANEL -->
+<div class="rp" id="rp">
+<!-- STEP 0: INFO -->
+<div class="step" id="s0">
+<h2><span class="sn">0</span> What You Are Evaluating</h2>
+
+<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:.7rem .8rem;margin-bottom:.6rem;font-size:.78rem;line-height:1.65">
+<div style="font-size:.88rem;font-weight:700;margin-bottom:.4rem">Therapist Responsiveness</div>
+
+<strong>Definition.</strong> Therapist responsiveness is the capacity to adapt interventions to the patient's evolving state in real time (Stiles et al., 1998). It integrates three steps: <em>reading</em> the patient's current state, <em>acting</em> in a way that fits that state, and <em>monitoring</em> whether the action helped. Responsive therapy means doing the right thing at the right moment for this specific patient.
+
+<div style="margin-top:.45rem"><strong>What responsiveness IS:</strong></div>
+<ul style="margin:.15rem 0 .15rem 1.1rem">
+<li><strong>Contingency</strong>: the therapist's action is a response to the patient's current state, not to a pre-set agenda. This is the strongest component (An et al., 2025: contingent adjustment explained 52% of outcome variance, vs. 24% for variability alone).</li>
+<li><strong>Flexibility</strong>: the therapist adjusts when the patient shifts. Note: continuing the same approach when the patient is deepening IS flexible.</li>
+<li><strong>Benefit</strong>: the patient moves forward, stays flat, or moves backward after the intervention.</li>
+</ul>
+
+<div style="margin-top:.45rem"><strong>What responsiveness is NOT:</strong></div>
+<ul style="margin:.15rem 0 .15rem 1.1rem">
+<li><strong>Not intervention quality.</strong> A beautifully delivered interpretation is high quality. If the patient needed containment, not reframing, that same interpretation is non-responsive. Quality evaluates the intervention in isolation; responsiveness evaluates it in context.</li>
+<li><strong>Not variability.</strong> A therapist who uses many different techniques is flexible, but if those techniques are not matched to the patient's state, this is not responsiveness.</li>
+<li><strong>Not empathy alone.</strong> Empathy is perceiving the patient's state. Responsiveness requires the additional step of acting appropriately on what was perceived.</li>
+</ul>
+
+<div style="margin-top:.45rem"><strong>The key question for every therapist move:</strong> Given what the patient was presenting at this moment, was this the right thing to do?</div>
+
+<div style="margin-top:.45rem"><strong>Example of the distinction:</strong> A therapist delivers a skillful meaning-making interpretation linking the patient's relational volatility to her attachment history. The patient responds with a flat "mm-hmm" and shifts topic. The interpretation is <em>high quality</em> (well-formed, clinically grounded) but <em>non-responsive</em>: the patient was signaling a need for support and validation, not reframing. The same interpretation at a different moment, when the patient is actively exploring her patterns, would be both high quality AND responsive.</div>
+</div>
+
+<div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.3rem">
+<div><label style="margin-top:0">Name</label><input type="text" id="f-name" placeholder="e.g., Ilay"></div>
+<div><label style="margin-top:0">Date</label><input type="text" id="f-date" placeholder="YYYY-MM-DD"></div>
+</div>
+<details style="margin-top:.4rem">
+<summary>Rating scales and ground rules</summary>
+<div style="font-size:.74rem;line-height:1.55;margin-top:.2rem">
+<strong>Contingency (1-5):</strong> 1=completely mismatched to patient state, 3=relevant but imprecise, 5=precisely targeted to the patient's emerging edge.<br>
+<strong>Flexibility (1-5):</strong> 1=identical repetition despite patient change, 3=moderate shift, 5=creative level-change or appropriate continuation.<br>
+<strong>Benefit (1-5):</strong> 1=clear backward movement (patient closes), 3=flat/neutral, 5=clear forward (new material, deepening).<br>
+<strong>Opportunity Match:</strong> Matched (intervention well-fitted to patient's state and readiness), Partial (partially matched), Mismatched (intervention did not match patient's state or readiness), No clear opp. (no signal or opportunity present).<br>
+<strong>Direction:</strong> Supporting (validates, deepens, stays within patient's frame) vs. Challenging (introduces new frame, pushes toward unexplored territory).<br><br>
+<strong>Ground rules:</strong> Ground claims in transcript and/or MIND codes. Patient self-state movement is the primary reference point. Flag uncertainty explicitly. Distinguish content (what was discussed) from process (how it was held).
+</div>
+</details>
+</div>
+
+<!-- STEP 1: TRAJECTORY -->
+<div class="step" id="s1">
+<h2><span class="sn">1</span> Between-Segment Trajectory</h2>
+<p class="sub">Using the left panel (MIND table + transcript), read across all 3 segments. What is the overall arc?</p>
+
+<label>Trajectory Pattern</label>
+<div class="bg" data-field="traj-pattern">
+<button onclick="sel(this)">Calibrating</button><button onclick="sel(this)">Escalating</button><button onclick="sel(this)">Rigid</button><button onclick="sel(this)">Arc</button><button onclick="sel(this)">De-escalating</button><button onclick="sel(this)">Flat</button><button onclick="sel(this)">Other</button>
+</div>
+
+<label>Trajectory Summary (2-3 sentences)</label>
+<textarea id="f-traj-summary" placeholder="What changed across segments? What opportunities did those changes create? How did the therapist relate to the patient's movement?"></textarea>
+</div>
+
+<!-- STEP 2: SEGMENT EVALUATIONS -->
+<div class="step" id="s2">
+<h2><span class="sn">2</span> Segment-Level Evaluation</h2>
+<p class="sub">For each segment, click the header to focus the transcript. Rate F/C/B and opportunity match.</p>
+
+<div class="seg-eval" id="eval-1">
+<h3 onclick="showSeg(1,document.querySelectorAll('.seg-tabs button')[1])">Segment 1</h3>
+<label style="margin-top:0">What it targeted</label>
+<div class="tg" data-field="s1-target">
+<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Unmet need</button><button onclick="tog(this)">Self-state</button><button onclick="tog(this)">Relational pattern</button><button onclick="tog(this)">Avoidance</button><button onclick="tog(this)">Insight</button>
+</div>
+<label>Direction</label>
+<div class="bg" data-field="s1-dir">
+<button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
+</div>
+<div class="ratings-row">
+<div><label>Flexibility (1-5)</label><div class="bg" data-field="s1-flex"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Contingency (1-5)</label><div class="bg" data-field="s1-cont"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Benefit (1-5)</label><div class="bg" data-field="s1-ben"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Opportunity Match</label><div class="bg" data-field="s1-opp"><button onclick="sel(this)">Matched</button><button onclick="sel(this)">Partial</button><button onclick="sel(this)">Mismatched</button><button onclick="sel(this)">No clear opp.</button></div></div>
+</div>
+<label style="font-size:.68rem;margin-top:.4rem">Missed signal? Was there a patient signal (affect shift, need articulation, relational openness) the therapist did not address?</label>
+<div class="bg" data-field="s1-missed">
+<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button>
+</div>
+<input type="text" id="f-s1-missed-note" style="width:100%;font-size:.72rem;margin-top:.15rem;display:none" placeholder="What signal was missed?">
+<label style="font-size:.68rem;margin-top:.2rem">TZPD: Did the therapist initiate something the patient was not ready for?</label>
+<div class="bg" data-field="s1-tzpd">
+<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button><button onclick="sel(this)">Unsure</button>
+</div>
+</div>
+
+<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>C-I-O chain:</b> How does the outcome of Segment 1 become the context for Segment 2? Did the therapist adjust?</div>
+<input type="text" id="f-cio-1to2" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Patient opened up -> therapist deepened exploration">
+
+<div class="seg-eval" id="eval-2">
+<h3 onclick="showSeg(2,document.querySelectorAll('.seg-tabs button')[2])">Segment 2</h3>
+<label style="margin-top:0">What it targeted</label>
+<div class="tg" data-field="s2-target">
+<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Unmet need</button><button onclick="tog(this)">Self-state</button><button onclick="tog(this)">Relational pattern</button><button onclick="tog(this)">Avoidance</button><button onclick="tog(this)">Insight</button>
+</div>
+<label>Direction</label>
+<div class="bg" data-field="s2-dir">
+<button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
+</div>
+<div class="ratings-row">
+<div><label>Flexibility</label><div class="bg" data-field="s2-flex"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Contingency</label><div class="bg" data-field="s2-cont"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Benefit</label><div class="bg" data-field="s2-ben"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Opportunity Match</label><div class="bg" data-field="s2-opp"><button onclick="sel(this)">Matched</button><button onclick="sel(this)">Partial</button><button onclick="sel(this)">Mismatched</button><button onclick="sel(this)">No clear opp.</button></div></div>
+</div>
+<label style="font-size:.68rem;margin-top:.4rem">Missed signal?</label>
+<div class="bg" data-field="s2-missed">
+<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button>
+</div>
+<input type="text" id="f-s2-missed-note" style="width:100%;font-size:.72rem;margin-top:.15rem;display:none" placeholder="What signal was missed?">
+<label style="font-size:.68rem;margin-top:.2rem">TZPD: Did the therapist push beyond the patient's readiness?</label>
+<div class="bg" data-field="s2-tzpd">
+<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button><button onclick="sel(this)">Unsure</button>
+</div>
+</div>
+
+<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>C-I-O chain:</b> How does the outcome of Segment 2 become the context for Segment 3? Did the therapist adjust?</div>
+<input type="text" id="f-cio-2to3" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Alliance dipped -> therapist shifted approach">
+
+<div class="seg-eval" id="eval-3">
+<h3 onclick="showSeg(3,document.querySelectorAll('.seg-tabs button')[3])">Segment 3</h3>
+<label style="margin-top:0">What it targeted</label>
+<div class="tg" data-field="s3-target">
+<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Unmet need</button><button onclick="tog(this)">Self-state</button><button onclick="tog(this)">Relational pattern</button><button onclick="tog(this)">Avoidance</button><button onclick="tog(this)">Insight</button>
+</div>
+<label>Direction</label>
+<div class="bg" data-field="s3-dir">
+<button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
+</div>
+<div class="ratings-row">
+<div><label>Flexibility</label><div class="bg" data-field="s3-flex"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Contingency</label><div class="bg" data-field="s3-cont"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Benefit</label><div class="bg" data-field="s3-ben"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
+<div><label>Opportunity Match</label><div class="bg" data-field="s3-opp"><button onclick="sel(this)">Matched</button><button onclick="sel(this)">Partial</button><button onclick="sel(this)">Mismatched</button><button onclick="sel(this)">No clear opp.</button></div></div>
+</div>
+<label style="font-size:.68rem;margin-top:.4rem">Missed signal?</label>
+<div class="bg" data-field="s3-missed">
+<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button>
+</div>
+<input type="text" id="f-s3-missed-note" style="width:100%;font-size:.72rem;margin-top:.15rem;display:none" placeholder="What signal was missed?">
+<label style="font-size:.68rem;margin-top:.2rem">TZPD: Did the therapist push beyond the patient's readiness?</label>
+<div class="bg" data-field="s3-tzpd">
+<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button><button onclick="sel(this)">Unsure</button>
+</div>
+</div>
+
+<!-- STEP 3: SYNTHESIS -->
+<div class="step" id="s3s">
+<h2><span class="sn">3</span> Synthesis: Primary Outputs</h2>
+<div style="background:#f0f7ff;border-left:3px solid #3b82f6;padding:.5rem .7rem;margin-bottom:.7rem;font-size:.72rem;color:#334155;border-radius:0 4px 4px 0">
+Steps 1-2 were scaffolding to structure your clinical reading. The <b>score</b> and <b>process explanation</b> below are the primary outputs of this annotation. They should be interpretable on their own and comparable across annotators.
+</div>
+
+<label style="margin-top:.1rem">Responsiveness Score</label>
+<table class="score-tbl">
+<tr><th>5</th><td>Consistently tracked evolving state. Contingent, adjusted, patient benefited. Signals detected and acted on.</td></tr>
+<tr><th>4</th><td>Generally attuned. Most actions contingent and beneficial. Minor missed opportunities.</td></tr>
+<tr><th>3</th><td>Mixed. Some well-fitted actions, others not contingent. Tracked some signals but missed important ones.</td></tr>
+<tr><th>2</th><td>Limited contingency. Approach driven by therapist's framework more than patient's signals.</td></tr>
+<tr><th>1</th><td>Rigid, disconnected from patient's state. No adjustment despite changes.</td></tr>
+</table>
+
+<div class="computed-score-box" id="computed-score-box">
+<div class="cs-row">
+<span class="cs-label">Computed from your segment ratings:</span>
+<span class="cs-val" id="cs-avg">--</span>
+<span class="cs-breakdown" id="cs-breakdown"></span>
+</div>
+<div class="cs-row" style="margin-top:.4rem">
+<span class="cs-label">Your final score:</span>
+<div class="rc" data-field="score" style="margin:0">
+<button class="rb" onclick="sel(this)"><div class="sc">1</div><span class="lb">Rigid</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">2</div><span class="lb">Limited</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">3</div><span class="lb">Mixed</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">4</div><span class="lb">Attuned</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">5</div><span class="lb">Consistent</span></button>
+</div>
+</div>
+<div id="override-note-wrap" style="display:none;margin-top:.3rem">
+<label style="font-size:.68rem;color:#b45309">You overrode the computed score. Why? (one sentence)</label>
+<input type="text" id="f-override-why" style="width:100%;font-size:.72rem" placeholder="e.g., Segment 3 was clinically decisive and should weigh more">
+</div>
+</div>
+
+<hr style="border:none;border-top:1px solid #e2e8f0;margin:.8rem 0">
+
+<label style="font-weight:700;font-size:.78rem">Process Explanation (structured)</label>
+<div style="background:#fefdf8;border-left:3px solid #d4a843;padding:.5rem .7rem;margin-bottom:.5rem;font-size:.68rem;color:#78716c;border-radius:0 4px 4px 0">
+Fill each field below. Together they form the process explanation. Keep each to a short phrase or single sentence.
+</div>
+
+<label style="font-size:.7rem">1. Patient trajectory</label>
+<div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
+<span style="font-size:.68rem;color:#64748b;white-space:nowrap">Patient moved from</span>
+<input type="text" id="f-pe-from" style="flex:1;font-size:.72rem" placeholder="e.g., guarded self-criticism">
+<span style="font-size:.68rem;color:#64748b;white-space:nowrap">to</span>
+<input type="text" id="f-pe-to" style="flex:1;font-size:.72rem" placeholder="e.g., tentative vulnerability">
+</div>
+
+<label style="font-size:.7rem">2. Best-fitted moment (one sentence)</label>
+<div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
+<span style="font-size:.68rem;color:#64748b;white-space:nowrap">Seg</span>
+<div class="bg" data-field="pe-best-seg" style="display:inline-flex;margin:0">
+<button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">1</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">2</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">3</button>
+</div>
+<input type="text" id="f-pe-best" style="flex:1;font-size:.72rem" placeholder="What the therapist did, what the patient was showing, and what resulted">
+</div>
+
+<label style="font-size:.7rem">3. Weakest-fitted moment (one sentence)</label>
+<div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
+<span style="font-size:.68rem;color:#64748b;white-space:nowrap">Seg</span>
+<div class="bg" data-field="pe-weak-seg" style="display:inline-flex;margin:0">
+<button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">1</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">2</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">3</button>
+</div>
+<input type="text" id="f-pe-weak" style="flex:1;font-size:.72rem" placeholder="What the therapist did, what the patient was showing, and what resulted">
+</div>
+
+<label style="font-size:.7rem">4. Overall assessment (one sentence)</label>
+<input type="text" id="f-pe-overall" style="width:100%;font-size:.72rem" placeholder="The therapist [tracked / partially tracked / missed] the patient's [trajectory / need / shift] because [reason]">
+
+<label style="font-size:.7rem;margin-top:.4rem">5. Expected next-session effect</label>
+<div class="bg" data-field="pe-next-effect" style="margin-bottom:.2rem">
+<button onclick="sel(this)">Positive</button><button onclick="sel(this)">Neutral</button><button onclick="sel(this)">Negative</button><button onclick="sel(this)">Unsure</button>
+</div>
+
+</div>
+
+<!-- STEP 4: CONFIDENCE -->
+<div class="step" id="s4">
+<h2><span class="sn">4</span> Confidence</h2>
+<label style="margin-top:.1rem">Overall confidence</label>
+<div class="rc" data-field="conf">
+<button class="rb" onclick="sel(this)"><div class="sc">1</div><span class="lb">Very unsure</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">2</div><span class="lb">Somewhat</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">3</div><span class="lb">Moderate</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">4</div><span class="lb">Fairly</span></button>
+<button class="rb" onclick="sel(this)"><div class="sc">5</div><span class="lb">Very sure</span></button>
+</div>
+<label>Uncertainties, hard-to-evaluate moments, framework gaps</label>
+<textarea id="f-uncert" placeholder="What was hardest? Where were you uncertain? Anything F/C/B could not capture?"></textarea>
+</div>
+
+<!-- EXPORT -->
+<div style="display:flex;gap:.3rem;margin-bottom:.5rem">
+<button class="exp-btn" onclick="exportData()" style="flex:1">Download .txt</button>
+<button class="exp-btn" onclick="copyAll()" style="flex:1;background:#3b82f6" id="cpBtn">Copy to clipboard</button>
+</div>
+<span class="save-status" id="ss" style="visibility:hidden;display:block;text-align:center">&check; Saved</span>
+
+<!-- SUMMARY STRIP -->
+<div class="summary-strip" id="sumstrip">
+<span class="ss-item" id="ss-s1">Seg1: --</span>
+<span class="ss-item" id="ss-s2">Seg2: --</span>
+<span class="ss-item" id="ss-s3">Seg3: --</span>
+<span class="ss-item" id="ss-traj">Traj: --</span>
+<span class="ss-item ss-score" id="ss-score">Score: --</span>
+<span class="ss-item" id="ss-conf">Conf: --</span>
+</div>
+</div>
+</div>
+<script>
+// === TRANSCRIPT DATA ===
+const SEGS={1:[
+{s:'P',t:"So it's something else and you don't want to go out with me? Go out with your friends. No, no I want, I want with you, I want with you And it's like it's sex, what good are you doing for me? And again and again. And it hurts but, but what? And then on Friday he was like that, he got a little down on himself and understood. At what six did I wake up, on Friday, on Saturday at six in the morning I woke up because I had a watch, I turned it off. Then I heard that he got up to pee. I thought he would come to bed and he didn't come to bed, he went back to the couch. So I got angry and got up and said to him why don't you come to bed? Like, the most what? And then he said, oh I didn't want to disturb you because you just got up. I looked at him, I said to him, tell me are you stupid? Oh, it was on the day between Thursday and Friday. As if I have no reason to get up, I don't work anymore on Friday"},
+{s:'P',t:", certainly not at 6 in the morning. What's wrong with you retard? Then he came to bed and that was the first time he asked me if I wanted to break up with him. Then I also told him I was thinking about it. Like, over the course of this weekend, there were a few times he asked and I told him I was thinking about it. he asked thinking about it. Like, it seems to me that if there are any more fights like this and then I'll really go to sleep, I don't know, at my sister's or somewhere and I hope that's what will wake him up but"},
+{s:'T',t:"As if you have another stage like this"},
+{s:'P',t:"As if I feel like I'm giving him another chance"},
+{s:'T',t:"Yes"},
+{s:'P',t:"Also to reset, also to show me that he wants. It's like there are times when he's the most charming in the world and I love Abu Dhabi the most and he's like trying to bully me and let's go out here and let's sit here and I just want to be next to you and he's like charming and then no, I don't, no. You can go fuck whoever you want and that's fine. Like, so why am I with you? I don't feel like that, I also told him, I don't feel like you want or are willing to invest as if it's okay, you got me. You have to preserve it. hmm and it seems to me that he doesn't really understand that"},
+{s:'T',t:"And that's something, it's also some sort of basic and normal need, but I think it's also some sort of something that you mentioned, which is very essential for you. That he will show you that he is passionate about you"},
+{s:'P',t:"Yes"},
+{s:'T',t:"And that he wants you and is jealous and is ready to make the investment. And against this background, his gathering into the game, which is accompanied by some kind of conversation like this, about doing whatever you want in bed, is even more hurtful"},
+{s:'P',t:"Yes, as if he disappeared to me, do what you want, it doesn't matter, I don't care. I don't know, where did you go? where did you go Well, fine, never mind. As if sex, passing by."},
+{s:'T',t:"passes by him"},
+{s:'P',t:". Like, then there's a day when he's better and he's lovely and we do things together or not together, but he does useful things, he leaves the house, he hmm. Let's say yesterday I had a very good day, he had a test at noon so he got up at 6 in the morning and really studied properly, the test went well for him, he came home and as if he played a game or we sat for a while and went to play football, came back from football, we went to friends and as soon as he He left the house and is also successful in things, so he is already coming back with other energies and without too much need to sit on the computer and play. Like, when we got back, last night he didn't play until 7 (laughing) in the evening, which is a record for me"}
+],2:[
+{s:'T',t:"And it sounds like these things seem to strongly indicate, in a strong way overall, that there is hope"},
+{s:'P',t:"Yes"},
+{s:'T',t:"And that he is, in the places where he is not drawn into the game, it is the same them that you love and know"},
+{s:'P',t:"Unless he suddenly has an I-need-to-play frenzy"},
+{s:'T',t:"Yes"},
+{s:'P',t:". Like if you leave the house and do things, then it's fine. But if we are at home and as it were, not much is happening, but just watching a series, then he might just leave in the middle for the sake of the game. Although now I started a good series and he joined because it's really good. So... as if from the point of view of self-confidence, I feel that he has increased a bit, but maybe it's just in relation to them, that them feels terrible about himself, so I feel that I have to be both strong for me and strong for him, so to shake it. hmm And the truth is that now he is meeting with some friend who is really a zero. But hmm as if a person has no ambitions and he inherited a lot of money and he doesn't know what he wants to do with himself. He doesn't want to work, he doesn't want to volunteer. It's like he's there, I don't know what he's doing for whole days. So I hope them sees him, that they just met. I wonder what insights he will come back with"},
+{s:'T',t:"(laughing)"},
+{s:'P',t:"Because then he compared himself to him, one of the times he felt zero. As if I feel much better about myself hmm as if the truth is that now, Sunday we were with the business consultant and she gave us tasks, for me and them and also as if we built some kind of little plan for us, things that need to be done, so it fills I have the time and like many times it causes them to simply not be on the computer because I need the computer"},
+{s:'T',t:"(laughing)"},
+{s:'P',t:". hmm So it's a little better mood. Hope it gets better."},
+{s:'T',t:"I think of those places where he asks if you want to break up and you say I'm thinking about it and as if, it sounds like in this response you are, as if you are already expressing something from that distance that is happening there. I mean, is there something you're passing on to him, I'm serious."},
+{s:'P',t:"On Monday he really felt it. It was on the second, I didn't fall asleep until 4:30 and then I slept next to him and got up for the babysitter and the babysitter too, both girls were annoying from the morning and then it rained so there were no taxis so I waited for the rain to stop. We started walking, half way a whore bus just splashed us and we returned home. As if it turned out that I only got home at around 10, instead of around 9, exhausted because I slept for two hours and that's how you turn on the heater, I take a shower and go to bed. Of course I couldn't fall asleep and he is like this all the time, so I went to the living room and watched TV like this and then I dozed off like this on and off. And he kept coming to me and what was going on or came and gave me a little massage, as if he was trying to flatter me a little? And I just couldn't let him go, he also came to me quite a bit at the beginning when I moved to the living room and he realized that I wasn't sleeping. This is how I want to talk, I want us to be okay, I want to pass it on, this fight. And as if something in me was very, I felt that I just couldn't let it go, that I needed another one like this, don't talk to me. I don't have the strength for you, I don't have the strength to listen to you and your nonsense because tell me that now and in two more days it will be, tomorrow, it will be the same again. hmm So it's like he tried, tried, tried hmm and at some point, he went to the test so that's when I got up, it was like 3 and I sat on the computer and worked and coffee and then as if somewhere I decided enough is enough, I'm letting it go. And then when he came back from the test, then there was really such a good and nice mood"}
+],3:[
+{s:'T',t:"And again you managed to get close"},
+{s:'P',t:"Yes. As if I made a switch in my head, well he doesn't deserve it, I'll be nice. Then it was fine. hmm"},
+{s:'T',t:"It's as if the volatility you know about yourself suddenly enters the relationship, as if you have a partner"},
+{s:'P',t:"Yes"},
+{s:'T',t:", more shared, someone who still brings it but the relationship, the closeness between you and the affection even, are in very, very sharp volatility."},
+{s:'P',t:"Yes, like it is. Like it also very much depends on the plans we have throughout the week. Because if we go out or meet with friends or do something then it's fine but if it's just the two of us then he doesn't feel a reason to invest or I don't know"},
+{s:'T',t:"mm-hmm"},
+{s:'P',t:". So it's stuck on the computer. And then I feel like it's ready because of me. like"},
+{s:'T',t:"Is this something that can be communicated? You mean the, something from this vulnerability?"},
+{s:'P',t:"to his?"},
+{s:'T',t:"Yes"},
+{s:'P',t:"It seems to me that in the beginning it was, in the beginning it did come from hurt. There were also several conversations where I told him, I remember one of them, I told him that I don't feel loved, I don't feel you are with me. And since then he understood and since then he is very much I love you and Pozzi Mozzi for episodes"},
+{s:'T',t:"Yes"},
+{s:'P',t:"And as if then came the conversation of you need to maintain the relationship. No... there is the relationship and there is the house and these are two different things and in both you are not functioning so well at the moment. Like once every three days you function hmm, so at first it comes from a place of vulnerability and let go, give me something"},
+{s:'T',t:"Yes"},
+{s:'P',t:"And now this, the last few days I just feel that if you don't change I don't want to stay, if you don't change something"},
+{s:'T',t:"Yes, it went through some kind of switch. Now, it sounds, I mean it's such an option for a moment or to be in the weak and vulnerable place and try to communicate it or to move to a place that is already much colder, there is something even firm about it that has already taken a distance"},
+{s:'P',t:"mm-hmm"},
+{s:'T',t:". And I wonder if there could be other options"},
+{s:'P',t:"I don't know, these are just the options I know. Like, where he is with me, every time in a relationship, as soon as I realize that it's going to end, or ends, ice"},
+{s:'T',t:"ice"},
+{s:'P',t:". Like I love Abu Dhabi the most and am ready to give and open my heart but once that's it, then don't talk to me, I don't want to hear about you. hmm"},
+{s:'T',t:"And was of this ice these days"},
+{s:'P',t:"Yes"},
+{s:'T',t:"Yes"},
+{s:'P',t:"He already received from him. Like I know I don't want it to end. I think there is something very good here but, but then, as if these days he doesn't sleep with me or he seems to understand me now the nerves of thinking what to do, suddenly all the people who told me it wouldn't work and it didn't, something like that can't work so it Come on, maybe they were right? Maybe they know better than me? hmm"}
+]};
+const EV=[
+{seg:1,d:'a',span:"And it hurts",cat:"Sad, emotional pain",ad:2,ml:'mal'},
+{seg:1,d:'a',span:"So I got angry",cat:"Justifiable anger",ad:3,ml:'mal'},
+{seg:1,d:'a',span:"yesterday I had a very good day",cat:"Content, happy",ad:4,ml:'adap'},
+{seg:1,d:'b',span:"I said to him, tell me are you stupid?",cat:"Fight or flight",ad:3,ml:'mal'},
+{seg:1,d:'b',span:"I'm giving him another chance",cat:"Relating",ad:3,ml:'adap'},
+{seg:1,d:'b',span:"I don't feel like you want or are willing to invest",cat:"Fight or flight",ad:3,ml:'mal'},
+{seg:1,d:'c',span:"you don't want to go out with me?",cat:"Other as detached",ad:2,ml:'mal'},
+{seg:1,d:'c',span:"I thought he would come to bed and he didn't come to bed, he went back to the couch",cat:"Other as detached",ad:2,ml:'mal'},
+{seg:1,d:'c',span:"there are times when he's the most charming in the world",cat:"Other as related",ad:4,ml:'adap'},
+{seg:1,d:'c',span:"there's a day when he's better and he's lovely and we do things together",cat:"Other as related",ad:4,ml:'adap'},
+{seg:1,d:'d',span:"if there are any more fights like this and then I'll really go to sleep",cat:"Expect relatedness unmet",ad:2,ml:'mal'},
+{seg:1,d:'d',span:"You have to preserve it.",cat:"Relatedness",ad:3,ml:'adap'},
+{seg:1,d:'t',span:"As if you have another stage like this",cat:"Meaning making",q:3},
+{seg:1,d:'t',span:"And that's something, it's also some sort of basic and normal need",cat:"Empathy",q:3},
+{seg:1,d:'t',span:"passes by him",cat:"Meaning making",q:3},
+{seg:2,d:'a',span:"So it's a little better mood.",cat:"Content, happy",ad:4,ml:'adap'},
+{seg:2,d:'a',span:"I felt that I just couldn't let it go",cat:"Angry (aggression)",ad:2,ml:'mal'},
+{seg:2,d:'b',span:"I don't have the strength for you",cat:"Fight or flight",ad:3,ml:'mal'},
+{seg:2,d:'b',span:"we were with the business consultant and she gave us tasks",cat:"Self care",ad:4,ml:'adap'},
+{seg:2,d:'c',span:"then he might just leave in the middle for the sake of the game",cat:"Other as detached",ad:2,ml:'mal'},
+{seg:2,d:'c',span:"now I started a good series and he joined",cat:"Other as related",ad:3,ml:'adap'},
+{seg:2,d:'c',span:"gave me a little massage, as if he was trying to flatter me",cat:"Other as related",ad:4,ml:'adap'},
+{seg:2,d:'c',span:"from the point of view of self-confidence, I feel that he has increased a bit",cat:"Self-acceptance",ad:3,ml:'adap'},
+{seg:2,d:'d',span:"I want to talk, I want us to be okay, I want to pass it on",cat:"Relatedness",ad:4,ml:'adap'},
+{seg:2,d:'d',span:"tomorrow, it will be the same again",cat:"Expect relatedness unmet",ad:2,ml:'mal'},
+{seg:2,d:'t',span:"it sounds like these things seem to strongly indicate",cat:"Meaning making",q:3},
+{seg:2,d:'t',span:"in the places where he is not drawn into the game, it is the same them that you love and know",cat:"Meaning making",q:3},
+{seg:3,d:'b',span:"I'll be nice.",cat:"Relating",ad:3,ml:'adap'},
+{seg:3,d:'b',span:"I don't feel loved, I don't feel you are with me.",cat:"Fight or flight",ad:3,ml:'mal'},
+{seg:3,d:'b',span:"if you don't change I don't want to stay",cat:"Fight or flight",ad:3,ml:'mal'},
+{seg:3,d:'b',span:"as soon as I realize that it's going to end, or ends, ice",cat:"Fight or flight",ad:2,ml:'mal'},
+{seg:3,d:'b',span:"Like I love Abu Dhabi the most and am ready to give and open my heart",cat:"Relating",ad:3,ml:'adap'},
+{seg:3,d:'c',span:"well he doesn't deserve it",cat:"Other as related",ad:3,ml:'adap'},
+{seg:3,d:'c',span:"if it's just the two of us then he doesn't feel a reason to invest",cat:"Other as detached",ad:2,ml:'mal'},
+{seg:3,d:'c',span:"since then he understood and since then he is very much I love you",cat:"Other as related",ad:3,ml:'adap'},
+{seg:3,d:'c',span:"I think there is something very good here",cat:"Other as related",ad:4,ml:'adap'},
+{seg:3,d:'d',span:"I know I don't want it to end",cat:"Relatedness",ad:3,ml:'adap'},
+{seg:3,d:'t',span:"And again you managed to get close",cat:"Meaning making",q:3},
+{seg:3,d:'t',span:"the volatility you know about yourself suddenly enters the relationship",cat:"Meaning making",q:4},
+{seg:3,d:'t',span:"the closeness between you and the affection even, are in very, very sharp volatility.",cat:"Meaning making",q:3},
+{seg:3,d:'t',span:"And was of this ice these days",cat:"Meaning making",q:3}
+];
+const SS={1:"Two self-states: one seeks closeness/consistency (perceives partner as occasionally meeting needs, feels content when he shows interest); the other expects relatedness needs unmet (views him as detached, reacts with anger/fight-or-flight, thoughts of leaving).",2:"Dominant: expects relatedness needs unmet, partner as distant. Withdraws in anger. Adaptive state: hopes to find relatedness, recognizes partner's efforts, manages empathy and self-care. New: self-acceptance emerges.",3:"Closeness-seeking state (partner as related, warm behavior) vs. withdrawal state (partner as detached, fight/flight, 'ice'). Needs expressed indirectly. Volatility between the two states becomes the focus."};
+const MLO_DATA={1:{exp:3,ins:4,mlo:6},2:{exp:3,ins:4,mlo:7},3:{exp:3,ins:4,mlo:6}};
+const ALLIANCE={1:4,2:4,3:3};
+const MIND_ROWS=[
+{dim:'Affect',s1:'Content/happy (2,4)\nAnger (3,3)',s2:'Content/happy (2,4)\nAggression (2,2)',s3:'\u2014',c12:'Anger\u2193',c23:'Absent'},
+{dim:'B-Other',s1:'Fight/fl (4,3)',s2:'Fight/fl (3,3)',s3:'Relating (3,4)\nFight/fl (4,2)',c12:'Pres\u2193',c23:'Fight/fl\u2191\n+Relating'},
+{dim:'B-Self',s1:'\u2014',s2:'Self-care (2,4)',s3:'\u2014',c12:'+New',c23:'Gone'},
+{dim:'Cog-Other',s1:'Related (2,4)\nDetached (4,2)',s2:'Related (2,4)\nDetached (3,2)',s3:'Related (3,4)\nDetached (4,2)',c12:'Detach\u2193',c23:'Both\u2191'},
+{dim:'Cog-Self',s1:'\u2014',s2:'Self-accept (2,4)',s3:'\u2014',c12:'+New',c23:'Gone'},
+{dim:'Desire',s1:'Relat (3,4)\nUnmet (2,2)',s2:'Relat (2,4)\nUnmet (2,2)',s3:'Relat (2,4)',c12:'Relat pres\u2193',c23:'Unmet gone'},
+{dim:'Therapist',s1:'MM(Q4)+Emp(Q3)',s2:'MM(Q3)',s3:'MM(Q4)+Expl(Q3)',c12:'Emp gone',c23:'+Expl'},
+{dim:'MLO',s1:'E3 I4 O:6',s2:'E3 I4 O:7',s3:'E3 I4 O:6',c12:'O\u2191',c23:'O\u2193'},
+{dim:'Alliance',s1:'4',s2:'4',s3:'3',c12:'\u2014',c23:'\u2193'}
+];
+// === GLOBALS ===
+const KEY_PREFIX='p0a_v2_eu0214_8_';
+let domains={a:true,b:true,c:true,d:true,t:true};
+let curSeg='all';
+let lastFocusedTA=null;
+let rv={};
+// === RENDER MIND TABLE ===
+function renderMindTbl(){
+let h='<table class="mind-tbl"><tr><th>Dim</th><th>Seg 1</th><th>\u0394</th><th>Seg 2</th><th>\u0394</th><th>Seg 3</th></tr>';
+MIND_ROWS.forEach(r=>{
+const cls12=r.c12.includes('\u2191')||r.c12.includes('New')?'arr-up':r.c12.includes('\u2193')||r.c12.includes('Gone')?'arr-dn':'';
+const cls23=r.c23.includes('\u2191')||r.c23.includes('New')||r.c23.includes('+')?'arr-up':r.c23.includes('\u2193')||r.c23.includes('Gone')||r.c23.includes('Absent')?'arr-dn':'';
+h+='<tr><td style="font-weight:600;white-space:nowrap">'+r.dim+'</td>';
+h+='<td style="white-space:pre-line">'+r.s1+'</td>';
+h+='<td class="'+cls12+'" style="text-align:center;white-space:pre-line;font-size:.6rem">'+r.c12+'</td>';
+h+='<td style="white-space:pre-line">'+r.s2+'</td>';
+h+='<td class="'+cls23+'" style="text-align:center;white-space:pre-line;font-size:.6rem">'+r.c23+'</td>';
+h+='<td style="white-space:pre-line">'+r.s3+'</td></tr>';
+});
+h+='</table>';
+document.getElementById('mind-tbl-content').innerHTML=h;
+}
+// === RENDER TRANSCRIPT WITH EVIDENCE HIGHLIGHTS ===
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlightSpans(text,seg){
+let html=esc(text);
+const spans=EV.filter(e=>e.seg===seg).sort((a,b)=>b.span.length-a.span.length);
+spans.forEach(ev=>{
+if(!domains[ev.d])return;
+const escaped=esc(ev.span);
+const cls='ev ev-'+ev.d;
+const tipText=ev.d==='t'?ev.cat+' (Q'+ev.q+')':ev.cat+' (adapt:'+ev.ad+', '+(ev.ml==='adap'?'adaptive':'maladaptive')+')';
+const repl='<span class="'+cls+'">'+escaped+'<span class="ev-tip">'+tipText+'</span></span>';
+const idx=html.indexOf(escaped);
+if(idx!==-1){html=html.substring(0,idx)+repl+html.substring(idx+escaped.length);}
+});
+return html;
+}
+function renderTranscript(){
+const wrap=document.getElementById('tx-wrap');
+let h='';
+const segsToShow=curSeg==='all'?[1,2,3]:[parseInt(curSeg)];
+segsToShow.forEach(sn=>{
+const mlo=MLO_DATA[sn];
+const al=ALLIANCE[sn];
+h+='<div class="seg-header" data-seg="'+sn+'">Segment '+sn+' <span class="mlo-badge">MLO:'+mlo.mlo+'</span><span class="mlo-badge" style="background:#dbeafe;color:#2563eb">All:'+al+'</span></div>';
+h+='<div class="self-state">'+SS[sn]+'</div>';
+SEGS[sn].forEach(turn=>{
+const cls=turn.s==='T'?'turn turn-t':turn.s==='A'?'turn turn-a':'turn turn-c';
+const speaker=turn.s==='T'?'T':turn.s==='A'?'':'P';
+const inner=highlightSpans(turn.t,sn);
+h+='<div class="'+cls+'"><span class="speaker">'+speaker+'</span>'+inner+'</div>';
+});
+});
+wrap.innerHTML=h;
+}
+// === SEGMENT TABS ===
+function showSeg(s,btn){
+curSeg=s;
+document.querySelectorAll('.seg-tabs button').forEach(b=>b.classList.remove('active'));
+if(btn)btn.classList.add('active');
+renderTranscript();
+}
+// === DOMAIN FILTERS ===
+function toggleDomain(d,btn){
+if(d==='all'){
+const allOn=Object.values(domains).every(v=>v);
+['a','b','c','d','t'].forEach(k=>domains[k]=!allOn);
+document.querySelectorAll('.domain-filters button').forEach(b=>{if(!allOn)b.classList.add('active');else b.classList.remove('active');});
+}else{
+domains[d]=!domains[d];
+btn.classList.toggle('active');
+const allBtn=document.querySelector('.df-all');
+if(Object.values(domains).every(v=>v))allBtn.classList.add('active');else allBtn.classList.remove('active');
+}
+renderTranscript();
+}
+// === BUTTON INTERACTIONS ===
+function sel(btn){
+btn.closest('.bg,.rc').querySelectorAll('button,.rb').forEach(b=>b.classList.remove('sel'));
+btn.classList.add('sel');
+const field=btn.closest('[data-field]');
+if(field){
+rv[field.dataset.field]=btn.textContent.trim();
+const fn=field.dataset.field;
+if(fn.endsWith('-missed')){
+const sn=fn.replace('-missed','');
+const noteEl=document.getElementById('f-'+sn+'-missed-note');
+if(noteEl)noteEl.style.display=btn.textContent.trim()==='Yes'?'block':'none';
+}
+}
+ds();updateStrip();computeScore();
+}
+function tog(btn){
+btn.classList.toggle('sel');
+const field=btn.closest('[data-field]');
+if(field){
+const vals=[];
+field.querySelectorAll('button.sel').forEach(b=>vals.push(b.textContent.trim()));
+rv[field.dataset.field]=vals.join(',');
+}
+ds();
+}
+// === CITE TOOLTIP ===
+function trackFocus(){
+document.querySelectorAll('textarea').forEach(ta=>{
+ta.addEventListener('focus',()=>{lastFocusedTA=ta;});
+});
+}
+document.getElementById('lp').addEventListener('mouseup',e=>{
+const s=window.getSelection();
+const txt=s.toString().trim();
+const tip=document.getElementById('cite-tip');
+if(txt.length>3&&e.target.closest('.tx-wrap')){
+const r=s.getRangeAt(0).getBoundingClientRect();
+tip.style.display='block';
+tip.style.left=(r.left+r.width/2-20)+'px';
+tip.style.top=(r.top-30)+'px';
+tip.dataset.text=txt;
+}else{tip.style.display='none';}
+});
+document.addEventListener('mousedown',e=>{
+if(!e.target.closest('#cite-tip'))document.getElementById('cite-tip').style.display='none';
+});
+function doCite(){
+const tip=document.getElementById('cite-tip');
+const txt=tip.dataset.text;
+if(lastFocusedTA&&txt){
+const q='"'+txt+'"';
+const pos=lastFocusedTA.selectionStart;
+const val=lastFocusedTA.value;
+lastFocusedTA.value=val.substring(0,pos)+q+val.substring(pos);
+lastFocusedTA.focus();
+}
+tip.style.display='none';
+window.getSelection().removeAllRanges();
+ds();
+}
+// === COMPUTED SCORE ===
+function computeScore(){
+const dims=['flex','cont','ben'];
+const vals=[];
+const segAvgs=[];
+[1,2,3].forEach(s=>{
+const segVals=[];
+dims.forEach(d=>{
+const v=parseInt(rv['s'+s+'-'+d]);
+if(!isNaN(v)){vals.push(v);segVals.push(v);}
+});
+segAvgs.push(segVals.length===3?(segVals.reduce((a,b)=>a+b,0)/3):null);
+});
+const el=document.getElementById('cs-avg');
+const bd=document.getElementById('cs-breakdown');
+const overWrap=document.getElementById('override-note-wrap');
+if(vals.length===0){el.textContent='--';bd.textContent='';overWrap.style.display='none';return;}
+const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+const rounded=Math.round(avg);
+el.textContent=avg.toFixed(2);
+const parts=segAvgs.map((a,i)=>a!==null?'S'+(i+1)+':'+a.toFixed(1):'S'+(i+1)+':?');
+bd.textContent='('+parts.join(' | ')+')';
+const chosen=parseInt(rv['score']);
+if(!isNaN(chosen)&&chosen!==rounded){
+overWrap.style.display='block';
+}else{
+overWrap.style.display='none';
+}
+}
+// === SUMMARY STRIP ===
+function updateStrip(){
+[1,2,3].forEach(n=>{
+const f=rv['s'+n+'-flex']||'-';
+const c=rv['s'+n+'-cont']||'-';
+const b=rv['s'+n+'-ben']||'-';
+const o=rv['s'+n+'-opp']||'';
+document.getElementById('ss-s'+n).textContent='Seg'+n+': F'+f+' C'+c+' B'+b+(o?' '+o:'');
+});
+document.getElementById('ss-traj').textContent='Traj: '+(rv['traj-pattern']||'--');
+document.getElementById('ss-score').textContent='Score: '+(rv['score']||'--');
+document.getElementById('ss-conf').textContent='Conf: '+(rv['conf']||'--');
+}
+// === SAVE / LOAD ===
+let st=null;
+function v(id){var e=document.getElementById(id);return e?e.value:'';}
+function sk(){return KEY_PREFIX+(v('f-name')||'anon');}
+function ds(){clearTimeout(st);st=setTimeout(save,500);}
+function save(){
+const f={};
+document.querySelectorAll('textarea[id],input[type=text][id]').forEach(e=>{f[e.id]=e.value;});
+const d={f:f,rv:rv};
+localStorage.setItem(sk(),JSON.stringify(d));
+const ss=document.getElementById('ss');ss.textContent='\u2713 Saved';ss.style.visibility='visible';
+clearTimeout(ss._t);ss._t=setTimeout(()=>{ss.style.visibility='hidden';},1500);
+updateStrip();
+}
+function load(){
+const raw=localStorage.getItem(sk());if(!raw)return;
+try{
+const d=JSON.parse(raw);
+if(d.f)Object.keys(d.f).forEach(id=>{const e=document.getElementById(id);if(e)e.value=d.f[id];});
+if(d.rv){
+rv=d.rv;
+Object.keys(rv).forEach(f=>{
+const el=document.querySelector('[data-field="'+f+'"]');
+if(!el)return;
+const isTg=el.classList.contains('tg');
+if(isTg){
+const vals=rv[f].split(',');
+el.querySelectorAll('button').forEach(b=>{if(vals.includes(b.textContent.trim()))b.classList.add('sel');});
+}else{
+el.querySelectorAll('button,.rb').forEach(b=>{if(b.textContent.trim()===rv[f])b.classList.add('sel');});
+}
+});
+}
+updateStrip();
+}catch(e){console.error(e);}
+}
+// === EXPORT ===
+function buildTxt(){
+let segTxt='';
+[1,2,3].forEach(n=>{
+segTxt+='  Segment '+n+':\n    Target: '+(rv['s'+n+'-target']||'-')+'\n    Dir: '+(rv['s'+n+'-dir']||'-')+'\n    F='+(rv['s'+n+'-flex']||'-')+' C='+(rv['s'+n+'-cont']||'-')+' B='+(rv['s'+n+'-ben']||'-')+' Opp='+(rv['s'+n+'-opp']||'-')+'\n    Missed signal: '+(rv['s'+n+'-missed']||'-')+(v('f-s'+n+'-missed-note')?' ('+v('f-s'+n+'-missed-note')+')':'')+'\n    TZPD violation: '+(rv['s'+n+'-tzpd']||'-')+'\n';
+if(n<3)segTxt+='  C-I-O chain '+n+'->'+(n+1)+': '+v('f-cio-'+n+'to'+(n+1))+'\n';
+});
+return['PHASE 0a v2: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),
+'Annotator: '+v('f-name'),'Date: '+v('f-date'),'',
+'1. TRAJECTORY','Pattern: '+(rv['traj-pattern']||'-'),'Summary: '+v('f-traj-summary'),'',
+'2. SEGMENT EVALUATIONS\n'+segTxt,
+'3. SYNTHESIS',
+'Computed score: '+(document.getElementById('cs-avg').textContent||'-'),
+'Final score: '+(rv['score']||'-'),
+'Override justification: '+v('f-override-why'),
+'',
+'Process explanation (structured):',
+'  1. Patient trajectory: from ['+v('f-pe-from')+'] to ['+v('f-pe-to')+']',
+'  2. Best-fitted: Seg '+(rv['pe-best-seg']||'?')+' - '+v('f-pe-best'),
+'  3. Weakest-fitted: Seg '+(rv['pe-weak-seg']||'?')+' - '+v('f-pe-weak'),
+'  4. Overall: '+v('f-pe-overall'),
+'  5. Expected next-session effect: '+(rv['pe-next-effect']||'-'),
+'',
+'4. CONFIDENCE: '+(rv['conf']||'-'),'Uncertainties: '+v('f-uncert')].join('\n');
+}
+function exportData(){
+const b=new Blob([buildTxt()],{type:'text/plain'});
+const a=document.createElement('a');a.href=URL.createObjectURL(b);
+a.download='phase0a_v2_EU0214_8_'+(v('f-name')||'annotator')+'.txt';a.click();
+}
+function copyAll(){
+navigator.clipboard.writeText(buildTxt()).then(()=>{
+const b=document.getElementById('cpBtn');b.textContent='Copied!';b.style.background='#16a34a';
+setTimeout(()=>{b.textContent='Copy to clipboard';b.style.background='#3b82f6';},2000);
+});
+}
+// === BIND & INIT ===
+function bind(){
+document.querySelectorAll('textarea,input[type=text]').forEach(e=>{
+e.removeEventListener('input',ds);e.addEventListener('input',ds);
+});
+trackFocus();
+}
+document.getElementById('f-name').addEventListener('change',load);
+renderMindTbl();
+renderTranscript();
+bind();
+load();
+computeScore();
+</script>
+</body></html>

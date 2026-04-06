@@ -165,28 +165,22 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="step" id="s0">
 <h2><span class="sn">0</span> What You Are Evaluating</h2>
 
-<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:.7rem .8rem;margin-bottom:.6rem;font-size:.78rem;line-height:1.65">
-<div style="font-size:.88rem;font-weight:700;margin-bottom:.4rem">Therapist Responsiveness</div>
-
-<strong>Definition.</strong> Therapist responsiveness is the capacity to adapt interventions to the patient's evolving state in real time (Stiles et al., 1998). It integrates three steps: <em>reading</em> the patient's current state, <em>acting</em> in a way that fits that state, and <em>monitoring</em> whether the action helped. Responsive therapy means doing the right thing at the right moment for this specific patient.
-
-<div style="margin-top:.45rem"><strong>What responsiveness IS:</strong></div>
-<ul style="margin:.15rem 0 .15rem 1.1rem">
-<li><strong>Contingency</strong>: the therapist's action is a response to the patient's current state, not to a pre-set agenda. This is the strongest component (An et al., 2025: contingent adjustment explained 52% of outcome variance, vs. 24% for variability alone).</li>
-<li><strong>Flexibility</strong>: the therapist adjusts when the patient shifts. Note: continuing the same approach when the patient is deepening IS flexible.</li>
-<li><strong>Benefit</strong>: the patient moves forward, stays flat, or moves backward after the intervention.</li>
-</ul>
-
-<div style="margin-top:.45rem"><strong>What responsiveness is NOT:</strong></div>
-<ul style="margin:.15rem 0 .15rem 1.1rem">
-<li><strong>Not intervention quality.</strong> A beautifully delivered interpretation is high quality. If the patient needed containment, not reframing, that same interpretation is non-responsive. Quality evaluates the intervention in isolation; responsiveness evaluates it in context.</li>
-<li><strong>Not variability.</strong> A therapist who uses many different techniques is flexible, but if those techniques are not matched to the patient's state, this is not responsiveness.</li>
-<li><strong>Not empathy alone.</strong> Empathy is perceiving the patient's state. Responsiveness requires the additional step of acting appropriately on what was perceived.</li>
-</ul>
-
-<div style="margin-top:.45rem"><strong>The key question for every therapist move:</strong> Given what the patient was presenting at this moment, was this the right thing to do?</div>
-
-<div style="margin-top:.45rem"><strong>Example of the distinction:</strong> A therapist delivers a skillful meaning-making interpretation linking the patient's relational volatility to her attachment history. The patient responds with a flat "mm-hmm" and shifts topic. The interpretation is <em>high quality</em> (well-formed, clinically grounded) but <em>non-responsive</em>: the patient was signaling a need for support and validation, not reframing. The same interpretation at a different moment, when the patient is actively exploring her patterns, would be both high quality AND responsive.</div>
+<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:.6rem .8rem;margin-bottom:.6rem;font-size:.78rem;line-height:1.6">
+<div style="font-size:.88rem;font-weight:700;margin-bottom:.3rem">Therapist Responsiveness</div>
+<strong>Core question:</strong> Given what the patient was presenting at each moment, was the therapist's action fitted to the patient's state?
+<div style="margin-top:.3rem">Evaluate using the <strong>MIND codes</strong> (left panel) as the descriptive evidence. Your task is to assess <strong>fit</strong>, not to re-describe what happened.</div>
+<details style="margin-top:.4rem">
+<summary style="font-size:.72rem;font-weight:600;cursor:pointer">Evaluation dimensions (click to expand)</summary>
+<div style="margin-top:.3rem;font-size:.72rem;line-height:1.55">
+<strong>Flexibility</strong> (An et al., 2025): Did the therapist adjust when the patient shifted? Continuing the same approach when the patient is deepening IS flexible.<br>
+<strong>Contingency</strong> (An et al., 2025): Was the therapist's action a response to the patient's current state, not a pre-set agenda? The strongest component: contingent adjustment explained 52% of outcome variance vs. 24% for variability alone.<br>
+<strong>Benefit</strong> (An et al., 2025): Did the patient move forward, stay flat, or move backward after the intervention?<br>
+<strong>Opportunity detection</strong> (Watson &amp; Wiseman, 2021): Did the therapist detect moments of patient readiness (adaptive emotion rise, need articulation, self-state shift) and act on them? Were opportunities missed?<br>
+<strong>Processing capacity</strong> (Ribeiro et al., 2013): Was the intervention calibrated to the patient's current capacity, or did it push beyond what the patient could integrate?<br>
+<strong>Intervention function</strong> (Pascual-Leone et al., 2025): Did the intervention target the clinically relevant process? Function (what it targets) matters more than quality (how well it is delivered; d = 2.80 for need-focused interventions).<br><br>
+<strong>Key distinction:</strong> Responsiveness ≠ intervention quality. A well-delivered interpretation targeting the wrong process is high quality but non-responsive.
+</div>
+</details>
 </div>
 
 <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.3rem">
@@ -227,9 +221,13 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 
 <div class="seg-eval" id="eval-1">
 <h3 onclick="showSeg(1,document.querySelectorAll('.seg-tabs button')[1])">Segment 1</h3>
-<label style="margin-top:0">What it targeted</label>
-<div class="tg" data-field="s1-target">
-<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Unmet need</button><button onclick="tog(this)">Self-state</button><button onclick="tog(this)">Relational pattern</button><button onclick="tog(this)">Avoidance</button><button onclick="tog(this)">Insight</button>
+<label style="margin-top:0">ABCD domain targeted</label>
+<div class="tg" data-field="s1-domain">
+<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Behav-Other</button><button onclick="tog(this)">Behav-Self</button><button onclick="tog(this)">Cog-Other</button><button onclick="tog(this)">Cog-Self</button><button onclick="tog(this)">Desire</button>
+</div>
+<label>Intervention function</label>
+<div class="tg" data-field="s1-func">
+<button onclick="tog(this)">Affect regulation</button><button onclick="tog(this)">Need articulation</button><button onclick="tog(this)">Pattern recognition</button><button onclick="tog(this)">Experiential deepening</button><button onclick="tog(this)">Relational repair</button><button onclick="tog(this)">Support/validation</button><button onclick="tog(this)">Containment</button>
 </div>
 <label>Direction</label>
 <div class="bg" data-field="s1-dir">
@@ -241,25 +239,25 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div><label>Benefit (1-5)</label><div class="bg" data-field="s1-ben"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
 <div><label>Opportunity Match</label><div class="bg" data-field="s1-opp"><button onclick="sel(this)">Matched</button><button onclick="sel(this)">Partial</button><button onclick="sel(this)">Mismatched</button><button onclick="sel(this)">No clear opp.</button></div></div>
 </div>
-<label style="font-size:.68rem;margin-top:.4rem">Missed signal? Was there a patient signal (affect shift, need articulation, relational openness) the therapist did not address?</label>
-<div class="bg" data-field="s1-missed">
-<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button>
+<label style="font-size:.68rem;margin-top:.4rem">Opportunity evaluation</label>
+<div class="bg" data-field="s1-opp-eval">
+<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">Therapist-initiated, patient not ready</button>
 </div>
-<input type="text" id="f-s1-missed-note" style="width:100%;font-size:.72rem;margin-top:.15rem;display:none" placeholder="What signal was missed?">
-<label style="font-size:.68rem;margin-top:.2rem">TZPD: Did the therapist initiate something the patient was not ready for?</label>
-<div class="bg" data-field="s1-tzpd">
-<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button><button onclick="sel(this)">Unsure</button>
-</div>
+<input type="text" id="f-s1-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="Brief note on the opportunity (what signal, what action/inaction)">
 </div>
 
-<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>C-I-O chain:</b> How does the outcome of Segment 1 become the context for Segment 2? Did the therapist adjust?</div>
-<input type="text" id="f-cio-1to2" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Patient opened up -> therapist deepened exploration">
+<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>Between-segment adjustment:</b> Was the therapist's approach in Segment 2 adjusted based on what happened in Segment 1?</div>
+<input type="text" id="f-cio-1to2" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Patient opened up but therapist continued same approach / Therapist shifted to exploration after patient showed readiness">
 
 <div class="seg-eval" id="eval-2">
 <h3 onclick="showSeg(2,document.querySelectorAll('.seg-tabs button')[2])">Segment 2</h3>
-<label style="margin-top:0">What it targeted</label>
-<div class="tg" data-field="s2-target">
-<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Unmet need</button><button onclick="tog(this)">Self-state</button><button onclick="tog(this)">Relational pattern</button><button onclick="tog(this)">Avoidance</button><button onclick="tog(this)">Insight</button>
+<label style="margin-top:0">ABCD domain targeted</label>
+<div class="tg" data-field="s2-domain">
+<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Behav-Other</button><button onclick="tog(this)">Behav-Self</button><button onclick="tog(this)">Cog-Other</button><button onclick="tog(this)">Cog-Self</button><button onclick="tog(this)">Desire</button>
+</div>
+<label>Intervention function</label>
+<div class="tg" data-field="s2-func">
+<button onclick="tog(this)">Affect regulation</button><button onclick="tog(this)">Need articulation</button><button onclick="tog(this)">Pattern recognition</button><button onclick="tog(this)">Experiential deepening</button><button onclick="tog(this)">Relational repair</button><button onclick="tog(this)">Support/validation</button><button onclick="tog(this)">Containment</button>
 </div>
 <label>Direction</label>
 <div class="bg" data-field="s2-dir">
@@ -271,25 +269,25 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div><label>Benefit</label><div class="bg" data-field="s2-ben"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
 <div><label>Opportunity Match</label><div class="bg" data-field="s2-opp"><button onclick="sel(this)">Matched</button><button onclick="sel(this)">Partial</button><button onclick="sel(this)">Mismatched</button><button onclick="sel(this)">No clear opp.</button></div></div>
 </div>
-<label style="font-size:.68rem;margin-top:.4rem">Missed signal?</label>
-<div class="bg" data-field="s2-missed">
-<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button>
+<label style="font-size:.68rem;margin-top:.4rem">Opportunity evaluation</label>
+<div class="bg" data-field="s2-opp-eval">
+<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">Therapist-initiated, patient not ready</button>
 </div>
-<input type="text" id="f-s2-missed-note" style="width:100%;font-size:.72rem;margin-top:.15rem;display:none" placeholder="What signal was missed?">
-<label style="font-size:.68rem;margin-top:.2rem">TZPD: Did the therapist push beyond the patient's readiness?</label>
-<div class="bg" data-field="s2-tzpd">
-<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button><button onclick="sel(this)">Unsure</button>
-</div>
+<input type="text" id="f-s2-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="Brief note on the opportunity (what signal, what action/inaction)">
 </div>
 
-<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>C-I-O chain:</b> How does the outcome of Segment 2 become the context for Segment 3? Did the therapist adjust?</div>
-<input type="text" id="f-cio-2to3" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Alliance dipped -> therapist shifted approach">
+<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>Between-segment adjustment:</b> Was the therapist's approach in Segment 3 adjusted based on what happened in Segment 2?</div>
+<input type="text" id="f-cio-2to3" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Alliance dipped but therapist did not shift / Therapist responded to rupture with repair">
 
 <div class="seg-eval" id="eval-3">
 <h3 onclick="showSeg(3,document.querySelectorAll('.seg-tabs button')[3])">Segment 3</h3>
-<label style="margin-top:0">What it targeted</label>
-<div class="tg" data-field="s3-target">
-<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Unmet need</button><button onclick="tog(this)">Self-state</button><button onclick="tog(this)">Relational pattern</button><button onclick="tog(this)">Avoidance</button><button onclick="tog(this)">Insight</button>
+<label style="margin-top:0">ABCD domain targeted</label>
+<div class="tg" data-field="s3-domain">
+<button onclick="tog(this)">Affect</button><button onclick="tog(this)">Behav-Other</button><button onclick="tog(this)">Behav-Self</button><button onclick="tog(this)">Cog-Other</button><button onclick="tog(this)">Cog-Self</button><button onclick="tog(this)">Desire</button>
+</div>
+<label>Intervention function</label>
+<div class="tg" data-field="s3-func">
+<button onclick="tog(this)">Affect regulation</button><button onclick="tog(this)">Need articulation</button><button onclick="tog(this)">Pattern recognition</button><button onclick="tog(this)">Experiential deepening</button><button onclick="tog(this)">Relational repair</button><button onclick="tog(this)">Support/validation</button><button onclick="tog(this)">Containment</button>
 </div>
 <label>Direction</label>
 <div class="bg" data-field="s3-dir">
@@ -301,15 +299,11 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div><label>Benefit</label><div class="bg" data-field="s3-ben"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
 <div><label>Opportunity Match</label><div class="bg" data-field="s3-opp"><button onclick="sel(this)">Matched</button><button onclick="sel(this)">Partial</button><button onclick="sel(this)">Mismatched</button><button onclick="sel(this)">No clear opp.</button></div></div>
 </div>
-<label style="font-size:.68rem;margin-top:.4rem">Missed signal?</label>
-<div class="bg" data-field="s3-missed">
-<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button>
+<label style="font-size:.68rem;margin-top:.4rem">Opportunity evaluation</label>
+<div class="bg" data-field="s3-opp-eval">
+<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">Therapist-initiated, patient not ready</button>
 </div>
-<input type="text" id="f-s3-missed-note" style="width:100%;font-size:.72rem;margin-top:.15rem;display:none" placeholder="What signal was missed?">
-<label style="font-size:.68rem;margin-top:.2rem">TZPD: Did the therapist push beyond the patient's readiness?</label>
-<div class="bg" data-field="s3-tzpd">
-<button onclick="sel(this)">Yes</button><button onclick="sel(this)">No</button><button onclick="sel(this)">Unsure</button>
-</div>
+<input type="text" id="f-s3-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="Brief note on the opportunity (what signal, what action/inaction)">
 </div>
 
 <!-- STEP 3: SYNTHESIS -->
@@ -365,7 +359,10 @@ Fill each field below. Together they form the process explanation. Keep each to 
 <input type="text" id="f-pe-to" style="flex:1;font-size:.72rem" placeholder="e.g., tentative vulnerability">
 </div>
 
-<label style="font-size:.7rem">2. Best-fitted moment (one sentence)</label>
+<label style="font-size:.7rem">2. Key interventions and transitions</label>
+<textarea id="f-pe-transitions" class="sm" placeholder="What were the main therapist interventions? What shifted (or didn't) at each transition? Use MIND terms."></textarea>
+
+<label style="font-size:.7rem">3. Best-fitted moment (one sentence)</label>
 <div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
 <span style="font-size:.68rem;color:#64748b;white-space:nowrap">Seg</span>
 <div class="bg" data-field="pe-best-seg" style="display:inline-flex;margin:0">
@@ -374,7 +371,7 @@ Fill each field below. Together they form the process explanation. Keep each to 
 <input type="text" id="f-pe-best" style="flex:1;font-size:.72rem" placeholder="What the therapist did, what the patient was showing, and what resulted">
 </div>
 
-<label style="font-size:.7rem">3. Weakest-fitted moment (one sentence)</label>
+<label style="font-size:.7rem">4. Weakest-fitted moment (one sentence)</label>
 <div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
 <span style="font-size:.68rem;color:#64748b;white-space:nowrap">Seg</span>
 <div class="bg" data-field="pe-weak-seg" style="display:inline-flex;margin:0">
@@ -383,13 +380,8 @@ Fill each field below. Together they form the process explanation. Keep each to 
 <input type="text" id="f-pe-weak" style="flex:1;font-size:.72rem" placeholder="What the therapist did, what the patient was showing, and what resulted">
 </div>
 
-<label style="font-size:.7rem">4. Overall assessment (one sentence)</label>
+<label style="font-size:.7rem">5. Overall assessment (one sentence)</label>
 <input type="text" id="f-pe-overall" style="width:100%;font-size:.72rem" placeholder="The therapist [tracked / partially tracked / missed] the patient's [trajectory / need / shift] because [reason]">
-
-<label style="font-size:.7rem;margin-top:.4rem">5. Expected next-session effect</label>
-<div class="bg" data-field="pe-next-effect" style="margin-bottom:.2rem">
-<button onclick="sel(this)">Positive</button><button onclick="sel(this)">Neutral</button><button onclick="sel(this)">Negative</button><button onclick="sel(this)">Unsure</button>
-</div>
 
 </div>
 
@@ -397,15 +389,11 @@ Fill each field below. Together they form the process explanation. Keep each to 
 <div class="step" id="s4">
 <h2><span class="sn">4</span> Confidence</h2>
 <label style="margin-top:.1rem">Overall confidence</label>
-<div class="rc" data-field="conf">
-<button class="rb" onclick="sel(this)"><div class="sc">1</div><span class="lb">Very unsure</span></button>
-<button class="rb" onclick="sel(this)"><div class="sc">2</div><span class="lb">Somewhat</span></button>
-<button class="rb" onclick="sel(this)"><div class="sc">3</div><span class="lb">Moderate</span></button>
-<button class="rb" onclick="sel(this)"><div class="sc">4</div><span class="lb">Fairly</span></button>
-<button class="rb" onclick="sel(this)"><div class="sc">5</div><span class="lb">Very sure</span></button>
+<div class="bg" data-field="conf">
+<button onclick="sel(this)">High</button><button onclick="sel(this)">Moderate</button><button onclick="sel(this)">Low</button>
 </div>
 <label>Uncertainties, hard-to-evaluate moments, framework gaps</label>
-<textarea id="f-uncert" placeholder="What was hardest? Where were you uncertain? Anything F/C/B could not capture?"></textarea>
+<textarea id="f-uncert" placeholder="What was hardest? Where were you uncertain? Anything the framework could not capture?"></textarea>
 </div>
 
 <!-- EXPORT -->
@@ -585,7 +573,7 @@ segsToShow.forEach(sn=>{
 const mlo=MLO_DATA[sn];
 const al=ALLIANCE[sn];
 h+='<div class="seg-header" data-seg="'+sn+'">Segment '+sn+' <span class="mlo-badge">MLO:'+mlo.mlo+'</span><span class="mlo-badge" style="background:#dbeafe;color:#2563eb">All:'+al+'</span></div>';
-h+='<div class="self-state">'+SS[sn]+'</div>';
+// Self-state summaries removed per Dan's instruction: use MIND labels only
 SEGS[sn].forEach(turn=>{
 const cls=turn.s==='T'?'turn turn-t':turn.s==='A'?'turn turn-a':'turn turn-c';
 const speaker=turn.s==='T'?'T':turn.s==='A'?'':'P';
@@ -623,12 +611,6 @@ btn.classList.add('sel');
 const field=btn.closest('[data-field]');
 if(field){
 rv[field.dataset.field]=btn.textContent.trim();
-const fn=field.dataset.field;
-if(fn.endsWith('-missed')){
-const sn=fn.replace('-missed','');
-const noteEl=document.getElementById('f-'+sn+'-missed-note');
-if(noteEl)noteEl.style.display=btn.textContent.trim()==='Yes'?'block':'none';
-}
 }
 ds();updateStrip();computeScore();
 }
@@ -759,8 +741,8 @@ updateStrip();
 function buildTxt(){
 let segTxt='';
 [1,2,3].forEach(n=>{
-segTxt+='  Segment '+n+':\n    Target: '+(rv['s'+n+'-target']||'-')+'\n    Dir: '+(rv['s'+n+'-dir']||'-')+'\n    F='+(rv['s'+n+'-flex']||'-')+' C='+(rv['s'+n+'-cont']||'-')+' B='+(rv['s'+n+'-ben']||'-')+' Opp='+(rv['s'+n+'-opp']||'-')+'\n    Missed signal: '+(rv['s'+n+'-missed']||'-')+(v('f-s'+n+'-missed-note')?' ('+v('f-s'+n+'-missed-note')+')':'')+'\n    TZPD violation: '+(rv['s'+n+'-tzpd']||'-')+'\n';
-if(n<3)segTxt+='  C-I-O chain '+n+'->'+(n+1)+': '+v('f-cio-'+n+'to'+(n+1))+'\n';
+segTxt+='  Segment '+n+':\n    ABCD domain: '+(rv['s'+n+'-domain']||'-')+'\n    Function: '+(rv['s'+n+'-func']||'-')+'\n    Dir: '+(rv['s'+n+'-dir']||'-')+'\n    F='+(rv['s'+n+'-flex']||'-')+' C='+(rv['s'+n+'-cont']||'-')+' B='+(rv['s'+n+'-ben']||'-')+' Opp='+(rv['s'+n+'-opp']||'-')+'\n    Opportunity eval: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';
+if(n<3)segTxt+='  Between-seg adjustment '+n+'->'+(n+1)+': '+v('f-cio-'+n+'to'+(n+1))+'\n';
 });
 return['PHASE 0a v2: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),
 'Annotator: '+v('f-name'),'Date: '+v('f-date'),'',
@@ -773,10 +755,10 @@ return['PHASE 0a v2: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Worki
 '',
 'Process explanation (structured):',
 '  1. Patient trajectory: from ['+v('f-pe-from')+'] to ['+v('f-pe-to')+']',
-'  2. Best-fitted: Seg '+(rv['pe-best-seg']||'?')+' - '+v('f-pe-best'),
-'  3. Weakest-fitted: Seg '+(rv['pe-weak-seg']||'?')+' - '+v('f-pe-weak'),
-'  4. Overall: '+v('f-pe-overall'),
-'  5. Expected next-session effect: '+(rv['pe-next-effect']||'-'),
+'  2. Key interventions and transitions: '+v('f-pe-transitions'),
+'  3. Best-fitted: Seg '+(rv['pe-best-seg']||'?')+' - '+v('f-pe-best'),
+'  4. Weakest-fitted: Seg '+(rv['pe-weak-seg']||'?')+' - '+v('f-pe-weak'),
+'  5. Overall: '+v('f-pe-overall'),
 '',
 '4. CONFIDENCE: '+(rv['conf']||'-'),'Uncertainties: '+v('f-uncert')].join('\n');
 }

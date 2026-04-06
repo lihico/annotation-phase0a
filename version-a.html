@@ -120,6 +120,17 @@ input[type=text]:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 2px
 .exp-btn:hover{opacity:.9}
 .save-status{font-size:.65rem;color:var(--grn);min-height:1em}
 details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0}
+/* KEY MOMENTS */
+.km-wrap{margin:.4rem 0 .5rem;padding:.4rem;background:#fff;border:1px dashed #cbd5e1;border-radius:6px}
+.km-wrap-label{font-size:.72rem;font-weight:700;color:#475569;margin-bottom:.3rem;display:flex;align-items:center;gap:.4rem}
+.km-block{border:1px solid var(--brd);border-radius:6px;padding:.5rem;margin-bottom:.3rem;background:#fafbff;position:relative}
+.km-num{font-size:.6rem;font-weight:700;color:var(--acc);background:var(--accl);padding:.1rem .3rem;border-radius:3px}
+.km-remove{position:absolute;top:.3rem;right:.4rem;font-size:.6rem;color:var(--mut);cursor:pointer;padding:.1rem .25rem;border-radius:3px}
+.km-remove:hover{color:#dc2626;background:#fee2e2}
+.km-row{display:flex;gap:.3rem;margin-top:.25rem;align-items:center;flex-wrap:wrap}
+.km-row label{margin:0;font-size:.65rem;font-weight:600;color:#64748b;flex-shrink:0;width:auto}
+.km-add{display:inline-flex;align-items:center;gap:.2rem;font-size:.65rem;color:var(--acc);cursor:pointer;padding:.2rem .4rem;border:1px dashed var(--acc);border-radius:4px;background:transparent;margin-top:.15rem}
+.km-add:hover{background:var(--accl)}
 </style></head>
 <body>
 <div id="cite-tip" onclick="doCite()">Cite</div>
@@ -217,7 +228,7 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <!-- STEP 2: SEGMENT EVALUATIONS -->
 <div class="step" id="s2">
 <h2><span class="sn">2</span> Segment-Level Evaluation</h2>
-<p class="sub">For each segment, click the header to focus the transcript. Rate F/C/B and opportunity match.</p>
+<p class="sub">For each segment, identify the key therapist interventions (micro C-I-O loops), then synthesize into segment-level F/C/B ratings.</p>
 
 <div class="seg-eval" id="eval-1">
 <h3 onclick="showSeg(1,document.querySelectorAll('.seg-tabs button')[1])">Segment 1</h3>
@@ -233,6 +244,24 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="bg" data-field="s1-dir">
 <button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
 </div>
+
+<div class="km-wrap" id="km-wrap-1">
+<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(identify the main therapist interventions, then rate the segment below)</span></div>
+<div id="km-list-1">
+<div class="km-block" data-km="s1-km-1">
+<span class="km-num">Moment 1</span>
+<div class="km-row"><label>Context &amp; Intervention:</label><input type="text" id="f-s1-km-1-ci" style="flex:1;font-size:.7rem" placeholder="What patient was presenting + what therapist did"></div>
+<div class="km-row"><label>Shift:</label>
+<div class="bg" data-field="s1-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Forward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Backward</button></div>
+<input type="text" id="f-s1-km-1-note" style="flex:1;font-size:.7rem" placeholder="Brief: what shifted (or didn't)"></div>
+<div class="km-row"><label>Fit:</label>
+<div class="bg" data-field="s1-km-1-fit" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Fitted</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Partially</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Mismatched</button></div></div>
+</div>
+</div>
+<button class="km-add" onclick="addMoment(1)">+ Add moment</button>
+</div>
+
+<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis (grounded in the moments above)</label>
 <div class="ratings-row">
 <div><label>Flexibility (1-5)</label><div class="bg" data-field="s1-flex"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
 <div><label>Contingency (1-5)</label><div class="bg" data-field="s1-cont"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
@@ -263,6 +292,24 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="bg" data-field="s2-dir">
 <button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
 </div>
+
+<div class="km-wrap" id="km-wrap-2">
+<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(identify the main therapist interventions, then rate the segment below)</span></div>
+<div id="km-list-2">
+<div class="km-block" data-km="s2-km-1">
+<span class="km-num">Moment 1</span>
+<div class="km-row"><label>Context &amp; Intervention:</label><input type="text" id="f-s2-km-1-ci" style="flex:1;font-size:.7rem" placeholder="What patient was presenting + what therapist did"></div>
+<div class="km-row"><label>Shift:</label>
+<div class="bg" data-field="s2-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Forward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Backward</button></div>
+<input type="text" id="f-s2-km-1-note" style="flex:1;font-size:.7rem" placeholder="Brief: what shifted (or didn't)"></div>
+<div class="km-row"><label>Fit:</label>
+<div class="bg" data-field="s2-km-1-fit" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Fitted</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Partially</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Mismatched</button></div></div>
+</div>
+</div>
+<button class="km-add" onclick="addMoment(2)">+ Add moment</button>
+</div>
+
+<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis (grounded in the moments above)</label>
 <div class="ratings-row">
 <div><label>Flexibility</label><div class="bg" data-field="s2-flex"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
 <div><label>Contingency</label><div class="bg" data-field="s2-cont"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
@@ -293,6 +340,24 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="bg" data-field="s3-dir">
 <button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
 </div>
+
+<div class="km-wrap" id="km-wrap-3">
+<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(identify the main therapist interventions, then rate the segment below)</span></div>
+<div id="km-list-3">
+<div class="km-block" data-km="s3-km-1">
+<span class="km-num">Moment 1</span>
+<div class="km-row"><label>Context &amp; Intervention:</label><input type="text" id="f-s3-km-1-ci" style="flex:1;font-size:.7rem" placeholder="What patient was presenting + what therapist did"></div>
+<div class="km-row"><label>Shift:</label>
+<div class="bg" data-field="s3-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Forward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Backward</button></div>
+<input type="text" id="f-s3-km-1-note" style="flex:1;font-size:.7rem" placeholder="Brief: what shifted (or didn't)"></div>
+<div class="km-row"><label>Fit:</label>
+<div class="bg" data-field="s3-km-1-fit" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Fitted</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Partially</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Mismatched</button></div></div>
+</div>
+</div>
+<button class="km-add" onclick="addMoment(3)">+ Add moment</button>
+</div>
+
+<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis (grounded in the moments above)</label>
 <div class="ratings-row">
 <div><label>Flexibility</label><div class="bg" data-field="s3-flex"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
 <div><label>Contingency</label><div class="bg" data-field="s3-cont"><button onclick="sel(this)">1</button><button onclick="sel(this)">2</button><button onclick="sel(this)">3</button><button onclick="sel(this)">4</button><button onclick="sel(this)">5</button></div></div>
@@ -624,6 +689,40 @@ rv[field.dataset.field]=vals.join(',');
 }
 ds();
 }
+// === KEY MOMENTS ===
+const kmCount={1:1,2:1,3:1};
+const KM_MAX=3;
+function kmHtml(seg,n,showRemove){
+const pre='s'+seg+'-km-'+n;
+let h='<div class="km-block" data-km="'+pre+'">';
+if(showRemove)h+='<span class="km-remove" onclick="removeMoment('+seg+','+n+')">\u2715</span>';
+h+='<span class="km-num">Moment '+n+'</span>';
+h+='<div class="km-row"><label>Context &amp; Intervention:</label><input type="text" id="f-'+pre+'-ci" style="flex:1;font-size:.7rem" placeholder="What patient was presenting + what therapist did"></div>';
+h+='<div class="km-row"><label>Shift:</label>';
+h+='<div class="bg" data-field="'+pre+'-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Forward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Backward</button></div>';
+h+='<input type="text" id="f-'+pre+'-note" style="flex:1;font-size:.7rem" placeholder="Brief: what shifted (or didn\'t)"></div>';
+h+='<div class="km-row"><label>Fit:</label>';
+h+='<div class="bg" data-field="'+pre+'-fit" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Fitted</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Partially</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">Mismatched</button></div></div>';
+h+='</div>';
+return h;
+}
+function addMoment(seg){
+if(kmCount[seg]>=KM_MAX)return;
+kmCount[seg]++;
+const list=document.getElementById('km-list-'+seg);
+list.insertAdjacentHTML('beforeend',kmHtml(seg,kmCount[seg],true));
+bind();
+ds();
+}
+function removeMoment(seg,n){
+const block=document.querySelector('[data-km="s'+seg+'-km-'+n+'"]');
+if(block){
+['s'+seg+'-km-'+n+'-shift','s'+seg+'-km-'+n+'-fit'].forEach(k=>delete rv[k]);
+block.remove();
+}
+kmCount[seg]--;
+ds();
+}
 // === CITE TOOLTIP ===
 function trackFocus(){
 document.querySelectorAll('textarea').forEach(ta=>{
@@ -709,7 +808,7 @@ function ds(){clearTimeout(st);st=setTimeout(save,500);}
 function save(){
 const f={};
 document.querySelectorAll('textarea[id],input[type=text][id]').forEach(e=>{f[e.id]=e.value;});
-const d={f:f,rv:rv};
+const d={f:f,rv:rv,kmCount:{1:kmCount[1],2:kmCount[2],3:kmCount[3]}};
 localStorage.setItem(sk(),JSON.stringify(d));
 const ss=document.getElementById('ss');ss.textContent='\u2713 Saved';ss.style.visibility='visible';
 clearTimeout(ss._t);ss._t=setTimeout(()=>{ss.style.visibility='hidden';},1500);
@@ -719,6 +818,17 @@ function load(){
 const raw=localStorage.getItem(sk());if(!raw)return;
 try{
 const d=JSON.parse(raw);
+if(d.kmCount){
+[1,2,3].forEach(seg=>{
+const saved=d.kmCount[seg]||1;
+while(kmCount[seg]<saved){
+kmCount[seg]++;
+const list=document.getElementById('km-list-'+seg);
+list.insertAdjacentHTML('beforeend',kmHtml(seg,kmCount[seg],true));
+}
+});
+bind();
+}
 if(d.f)Object.keys(d.f).forEach(id=>{const e=document.getElementById(id);if(e)e.value=d.f[id];});
 if(d.rv){
 rv=d.rv;
@@ -741,7 +851,18 @@ updateStrip();
 function buildTxt(){
 let segTxt='';
 [1,2,3].forEach(n=>{
-segTxt+='  Segment '+n+':\n    ABCD domain: '+(rv['s'+n+'-domain']||'-')+'\n    Function: '+(rv['s'+n+'-func']||'-')+'\n    Dir: '+(rv['s'+n+'-dir']||'-')+'\n    F='+(rv['s'+n+'-flex']||'-')+' C='+(rv['s'+n+'-cont']||'-')+' B='+(rv['s'+n+'-ben']||'-')+' Opp='+(rv['s'+n+'-opp']||'-')+'\n    Opportunity eval: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';
+segTxt+='  Segment '+n+':\n    ABCD domain: '+(rv['s'+n+'-domain']||'-')+'\n    Function: '+(rv['s'+n+'-func']||'-')+'\n    Dir: '+(rv['s'+n+'-dir']||'-')+'\n';
+for(let m=1;m<=kmCount[n];m++){
+const pre='s'+n+'-km-'+m;
+const ci=v('f-'+pre+'-ci');
+const shift=rv[pre+'-shift']||'-';
+const note=v('f-'+pre+'-note');
+const fit=rv[pre+'-fit']||'-';
+if(ci||shift!=='-'||note||fit!=='-'){
+segTxt+='    Moment '+m+': '+ci+' | Shift: '+shift+(note?' ('+note+')':'')+' | Fit: '+fit+'\n';
+}
+}
+segTxt+='    Synthesis: F='+(rv['s'+n+'-flex']||'-')+' C='+(rv['s'+n+'-cont']||'-')+' B='+(rv['s'+n+'-ben']||'-')+' Opp='+(rv['s'+n+'-opp']||'-')+'\n    Opportunity eval: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';
 if(n<3)segTxt+='  Between-seg adjustment '+n+'->'+(n+1)+': '+v('f-cio-'+n+'to'+(n+1))+'\n';
 });
 return['PHASE 0a v2: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),

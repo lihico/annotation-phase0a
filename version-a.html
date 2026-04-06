@@ -183,12 +183,14 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <details style="margin-top:.4rem">
 <summary style="font-size:.72rem;font-weight:600;cursor:pointer">Evaluation dimensions (click to expand)</summary>
 <div style="margin-top:.3rem;font-size:.72rem;line-height:1.55">
-<strong>Flexibility</strong> (An et al., 2025): Did the therapist adjust when the patient shifted? Continuing the same approach when the patient is deepening IS flexible.<br>
-<strong>Contingency</strong> (An et al., 2025): Was the therapist's action a response to the patient's current state, not a pre-set agenda? The strongest component: contingent adjustment explained 52% of outcome variance vs. 24% for variability alone.<br>
-<strong>Benefit</strong> (An et al., 2025): Did the patient move forward, stay flat, or move backward after the intervention?<br>
-<strong>Opportunity detection</strong> (Watson &amp; Wiseman, 2021): Did the therapist detect moments of patient readiness (adaptive emotion rise, need articulation, self-state shift) and act on them? Were opportunities missed?<br>
-<strong>Processing capacity</strong> (Ribeiro et al., 2013): Was the intervention calibrated to the patient's current capacity, or did it push beyond what the patient could integrate?<br>
-<strong>Intervention function</strong> (Pascual-Leone et al., 2025): Did the intervention target the clinically relevant process? Function (what it targets) matters more than quality (how well it is delivered; d = 2.80 for need-focused interventions).<br><br>
+Responsiveness integrates three theoretically distinct components (An et al., 2025):<br>
+<strong>Flexibility:</strong> Did the therapist adjust when the patient shifted?<br>
+<strong>Contingency:</strong> Was the action a response to the patient's current state, not a pre-set agenda?<br>
+<strong>Benefit:</strong> Did the patient move forward, stay flat, or move backward?<br><br>
+These are rated as a single <strong>responsiveness</strong> composite per segment, because raters cannot reliably distinguish F/C/B independently. The LLM pipeline will decompose computationally.<br><br>
+Additional evaluation considerations:<br>
+<strong>Opportunity detection</strong> (Watson &amp; Wiseman, 2021): Did the therapist detect moments of readiness and act on them?<br>
+<strong>Intervention function</strong> (Pascual-Leone et al., 2025): Function (what it targets) matters more than quality (how well delivered; d = 2.80).<br><br>
 <strong>Key distinction:</strong> Responsiveness ≠ intervention quality. A well-delivered interpretation targeting the wrong process is high quality but non-responsive.
 </div>
 </details>
@@ -201,12 +203,10 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <details style="margin-top:.4rem">
 <summary>Rating scales and ground rules</summary>
 <div style="font-size:.74rem;line-height:1.55;margin-top:.2rem">
-<strong>Flexibility (-3 to +3):</strong> -3=rigidly repeats the same approach despite patient change, 0=neutral/minimal variation, +3=creatively adapts or appropriately sustains when patient is deepening.<br>
-<strong>Contingency (-3 to +3):</strong> -3=actively counter-contingent (responds to opposite of what patient presents), 0=generic/agenda-driven, +3=precisely targeted to patient's emerging state.<br>
-<strong>Benefit (-3 to +3):</strong> -3=clear backward movement (patient closes, withdraws, becomes more rigid), 0=flat/no change, +3=clear forward (new material, deepening, need articulation).<br>
-<strong>Shift (-2 to +2):</strong> Per key moment, how did the patient move after this intervention? -2=strong backward, 0=flat, +2=strong forward.<br>
-<strong>Opportunity:</strong> Detected &amp; acted / Detected &amp; missed / Not detected / Therapist-initiated, patient not ready.<br>
-<strong>Direction:</strong> Supporting (validates, deepens, stays within patient's frame) vs. Challenging (introduces new frame, pushes toward unexplored territory).<br><br>
+<strong>Segment Responsiveness (-3 to +3):</strong> -3=counter-responsive (intervention worsened fit), -2=clearly non-responsive, -1=slightly off, 0=neutral/generic, +1=somewhat responsive, +2=clearly responsive, +3=optimally responsive (fitted, contingent, beneficial).<br>
+<strong>Key-Moment Shift:</strong> Backward (patient closed, withdrew, became more rigid), Flat (no change), Forward (new material, deepening, need articulation).<br>
+<strong>Opportunity:</strong> Detected &amp; acted / Detected &amp; missed / Not detected / No clear opportunity.<br>
+<strong>ABCD domain:</strong> Which MIND patient domain(s) the therapist's intervention targeted (multi-select).<br><br>
 <strong>Ground rules:</strong> Ground claims in transcript and/or MIND codes. Patient self-state movement is the primary reference point. Flag uncertainty explicitly. Distinguish content (what was discussed) from process (how it was held).
 </div>
 </details>
@@ -215,7 +215,7 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <!-- STEP 1: SEGMENT EVALUATIONS (bottom-up) -->
 <div class="step" id="s2">
 <h2><span class="sn">1</span> Segment-Level Evaluation</h2>
-<p class="sub">Read each segment. Identify 1-3 key MIND-coded therapist interventions. Note what the patient was presenting (adaptive/maladaptive, from MIND table) and what shifted. Then synthesize into segment F/C/B.</p>
+<p class="sub">Read each segment. Identify 1-3 key therapist interventions (MIND-coded EMERG). For each, note patient state and what shifted. Then rate segment responsiveness.</p>
 
 <div class="seg-eval" id="eval-1">
 <h3 onclick="showSeg(1,document.querySelectorAll('.seg-tabs button')[1])">Segment 1</h3>
@@ -223,37 +223,26 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="tg" data-field="s1-domain">
 <button onclick="tog(this)">Affect</button><button onclick="tog(this)">Behav-Other</button><button onclick="tog(this)">Behav-Self</button><button onclick="tog(this)">Cog-Other</button><button onclick="tog(this)">Cog-Self</button><button onclick="tog(this)">Desire</button>
 </div>
-<label>Intervention function</label>
-<div class="tg" data-field="s1-func">
-<button onclick="tog(this)">Affect regulation</button><button onclick="tog(this)">Need articulation</button><button onclick="tog(this)">Pattern recognition</button><button onclick="tog(this)">Experiential deepening</button><button onclick="tog(this)">Relational repair</button><button onclick="tog(this)">Support/validation</button><button onclick="tog(this)">Containment</button>
-</div>
-<label>Direction</label>
-<div class="bg" data-field="s1-dir">
-<button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
-</div>
 
 <div class="km-wrap" id="km-wrap-1">
-<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions per segment; note patient state and what shifted)</span></div>
+<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions; note patient state and what shifted)</span></div>
 <div id="km-list-1">
 <div class="km-block" data-km="s1-km-1">
 <span class="km-num">Moment 1</span>
-<div class="km-row"><label>What happened:</label><input type="text" id="f-s1-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive from MIND) + therapist intervention (EMERG) + what shifted"></div>
+<div class="km-row"><label>What happened:</label><input type="text" id="f-s1-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>
 <div class="km-row"><label>Shift:</label>
-<div class="bg" data-field="s1-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-2</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">0</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+2</button></div></div>
+<div class="bg" data-field="s1-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>
 </div>
 </div>
 <button class="km-add" onclick="addMoment(1)">+ Add moment</button>
 </div>
 
-<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis (grounded in the moments above)</label>
-<div class="ratings-row">
-<div><label>Flexibility (-3 to +3)</label><div class="bg" data-field="s1-flex"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-<div><label>Contingency (-3 to +3)</label><div class="bg" data-field="s1-cont"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-<div><label>Benefit (-3 to +3)</label><div class="bg" data-field="s1-ben"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-</div>
+<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis</label>
+<div><label>Responsiveness (-3 to +3)</label>
+<div class="bg" data-field="s1-resp"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
 <label style="font-size:.68rem;margin-top:.4rem">Opportunity evaluation</label>
 <div class="bg" data-field="s1-opp-eval">
-<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">Therapist-initiated, patient not ready</button>
+<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">No clear opportunity</button>
 </div>
 <input type="text" id="f-s1-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="What signal did the patient show? How did the therapist respond (or not)?">
 </div>
@@ -267,37 +256,26 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="tg" data-field="s2-domain">
 <button onclick="tog(this)">Affect</button><button onclick="tog(this)">Behav-Other</button><button onclick="tog(this)">Behav-Self</button><button onclick="tog(this)">Cog-Other</button><button onclick="tog(this)">Cog-Self</button><button onclick="tog(this)">Desire</button>
 </div>
-<label>Intervention function</label>
-<div class="tg" data-field="s2-func">
-<button onclick="tog(this)">Affect regulation</button><button onclick="tog(this)">Need articulation</button><button onclick="tog(this)">Pattern recognition</button><button onclick="tog(this)">Experiential deepening</button><button onclick="tog(this)">Relational repair</button><button onclick="tog(this)">Support/validation</button><button onclick="tog(this)">Containment</button>
-</div>
-<label>Direction</label>
-<div class="bg" data-field="s2-dir">
-<button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
-</div>
 
 <div class="km-wrap" id="km-wrap-2">
-<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions per segment; note patient state and what shifted)</span></div>
+<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions; note patient state and what shifted)</span></div>
 <div id="km-list-2">
 <div class="km-block" data-km="s2-km-1">
 <span class="km-num">Moment 1</span>
-<div class="km-row"><label>What happened:</label><input type="text" id="f-s2-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive from MIND) + therapist intervention (EMERG) + what shifted"></div>
+<div class="km-row"><label>What happened:</label><input type="text" id="f-s2-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>
 <div class="km-row"><label>Shift:</label>
-<div class="bg" data-field="s2-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-2</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">0</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+2</button></div></div>
+<div class="bg" data-field="s2-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>
 </div>
 </div>
 <button class="km-add" onclick="addMoment(2)">+ Add moment</button>
 </div>
 
-<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis (grounded in the moments above)</label>
-<div class="ratings-row">
-<div><label>Flexibility</label><div class="bg" data-field="s2-flex"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-<div><label>Contingency</label><div class="bg" data-field="s2-cont"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-<div><label>Benefit</label><div class="bg" data-field="s2-ben"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-</div>
+<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis</label>
+<div><label>Responsiveness (-3 to +3)</label>
+<div class="bg" data-field="s2-resp"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
 <label style="font-size:.68rem;margin-top:.4rem">Opportunity evaluation</label>
 <div class="bg" data-field="s2-opp-eval">
-<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">Therapist-initiated, patient not ready</button>
+<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">No clear opportunity</button>
 </div>
 <input type="text" id="f-s2-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="What signal did the patient show? How did the therapist respond (or not)?">
 </div>
@@ -311,37 +289,26 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 <div class="tg" data-field="s3-domain">
 <button onclick="tog(this)">Affect</button><button onclick="tog(this)">Behav-Other</button><button onclick="tog(this)">Behav-Self</button><button onclick="tog(this)">Cog-Other</button><button onclick="tog(this)">Cog-Self</button><button onclick="tog(this)">Desire</button>
 </div>
-<label>Intervention function</label>
-<div class="tg" data-field="s3-func">
-<button onclick="tog(this)">Affect regulation</button><button onclick="tog(this)">Need articulation</button><button onclick="tog(this)">Pattern recognition</button><button onclick="tog(this)">Experiential deepening</button><button onclick="tog(this)">Relational repair</button><button onclick="tog(this)">Support/validation</button><button onclick="tog(this)">Containment</button>
-</div>
-<label>Direction</label>
-<div class="bg" data-field="s3-dir">
-<button onclick="sel(this)">Supporting</button><button onclick="sel(this)">Challenging</button><button onclick="sel(this)">Mixed</button>
-</div>
 
 <div class="km-wrap" id="km-wrap-3">
-<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions per segment; note patient state and what shifted)</span></div>
+<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions; note patient state and what shifted)</span></div>
 <div id="km-list-3">
 <div class="km-block" data-km="s3-km-1">
 <span class="km-num">Moment 1</span>
-<div class="km-row"><label>What happened:</label><input type="text" id="f-s3-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive from MIND) + therapist intervention (EMERG) + what shifted"></div>
+<div class="km-row"><label>What happened:</label><input type="text" id="f-s3-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>
 <div class="km-row"><label>Shift:</label>
-<div class="bg" data-field="s3-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-2</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">0</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+2</button></div></div>
+<div class="bg" data-field="s3-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>
 </div>
 </div>
 <button class="km-add" onclick="addMoment(3)">+ Add moment</button>
 </div>
 
-<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis (grounded in the moments above)</label>
-<div class="ratings-row">
-<div><label>Flexibility</label><div class="bg" data-field="s3-flex"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-<div><label>Contingency</label><div class="bg" data-field="s3-cont"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-<div><label>Benefit</label><div class="bg" data-field="s3-ben"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
-</div>
+<label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis</label>
+<div><label>Responsiveness (-3 to +3)</label>
+<div class="bg" data-field="s3-resp"><button onclick="sel(this)">-3</button><button onclick="sel(this)">-2</button><button onclick="sel(this)">-1</button><button onclick="sel(this)">0</button><button onclick="sel(this)">+1</button><button onclick="sel(this)">+2</button><button onclick="sel(this)">+3</button></div></div>
 <label style="font-size:.68rem;margin-top:.4rem">Opportunity evaluation</label>
 <div class="bg" data-field="s3-opp-eval">
-<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">Therapist-initiated, patient not ready</button>
+<button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">No clear opportunity</button>
 </div>
 <input type="text" id="f-s3-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="What signal did the patient show? How did the therapist respond (or not)?">
 </div>
@@ -353,11 +320,7 @@ details summary{cursor:pointer;font-weight:600;font-size:.74rem;padding:.15rem 0
 Step 1 was the bottom-up scaffolding. Now synthesize: what was the overall trajectory, and how responsive was the therapist? The <b>score</b> and <b>process explanation</b> are the primary outputs.
 </div>
 
-<label style="margin-top:.1rem">Between-Segment Trajectory</label>
-<div class="bg" data-field="traj-pattern">
-<button onclick="sel(this)">Calibrating</button><button onclick="sel(this)">Escalating</button><button onclick="sel(this)">Rigid</button><button onclick="sel(this)">Arc</button><button onclick="sel(this)">De-escalating</button><button onclick="sel(this)">Flat</button><button onclick="sel(this)">Other</button>
-</div>
-<label>Trajectory Summary (2-3 sentences)</label>
+<label style="margin-top:.1rem">Trajectory Summary (2-3 sentences)</label>
 <textarea id="f-traj-summary" placeholder="What changed across segments? What opportunities did those changes create? How did the therapist relate to the patient's movement?"></textarea>
 
 <hr style="border:none;border-top:1px solid #e2e8f0;margin:.8rem 0">
@@ -373,7 +336,7 @@ Step 1 was the bottom-up scaffolding. Now synthesize: what was the overall traje
 
 <div class="computed-score-box" id="computed-score-box">
 <div class="cs-row">
-<span class="cs-label">Computed from your segment ratings:</span>
+<span class="cs-label">Average of segment responsiveness ratings:</span>
 <span class="cs-val" id="cs-avg">--</span>
 <span class="cs-breakdown" id="cs-breakdown"></span>
 </div>
@@ -681,9 +644,9 @@ const pre='s'+seg+'-km-'+n;
 let h='<div class="km-block" data-km="'+pre+'">';
 if(showRemove)h+='<span class="km-remove" onclick="removeMoment('+seg+','+n+')">\u2715</span>';
 h+='<span class="km-num">Moment '+n+'</span>';
-h+='<div class="km-row"><label>What happened:</label><input type="text" id="f-'+pre+'-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive from MIND) + therapist intervention (EMERG) + what shifted"></div>';
+h+='<div class="km-row"><label>What happened:</label><input type="text" id="f-'+pre+'-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>';
 h+='<div class="km-row"><label>Shift:</label>';
-h+='<div class="bg" data-field="'+pre+'-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-2</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">-1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">0</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+1</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .35rem">+2</button></div></div>';
+h+='<div class="bg" data-field="'+pre+'-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>';
 h+='</div>';
 return h;
 }
@@ -741,16 +704,12 @@ ds();
 }
 // === COMPUTED SCORE ===
 function computeScore(){
-const dims=['flex','cont','ben'];
 const vals=[];
-const segAvgs=[];
-[1,2,3].forEach(s=>{
 const segVals=[];
-dims.forEach(d=>{
-const raw=rv['s'+s+'-'+d];
-if(raw!==undefined){const v=parseInt(raw);if(!isNaN(v)){vals.push(v);segVals.push(v);}}
-});
-segAvgs.push(segVals.length===3?(segVals.reduce((a,b)=>a+b,0)/3):null);
+[1,2,3].forEach(s=>{
+const raw=rv['s'+s+'-resp'];
+if(raw!==undefined){const v=parseInt(raw);if(!isNaN(v)){vals.push(v);segVals.push({seg:s,val:v});}else{segVals.push({seg:s,val:null});}}
+else{segVals.push({seg:s,val:null});}
 });
 const el=document.getElementById('cs-avg');
 const bd=document.getElementById('cs-breakdown');
@@ -758,7 +717,7 @@ const overWrap=document.getElementById('override-note-wrap');
 if(vals.length===0){el.textContent='--';bd.textContent='';overWrap.style.display='none';return;}
 const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
 el.textContent=avg.toFixed(2);
-const parts=segAvgs.map((a,i)=>a!==null?'S'+(i+1)+':'+a.toFixed(1):'S'+(i+1)+':?');
+const parts=segVals.map(sv=>sv.val!==null?'S'+sv.seg+':'+sv.val:'S'+sv.seg+':?');
 bd.textContent='('+parts.join(' | ')+', range: -3 to +3)';
 const chosen=parseInt(rv['score']);
 if(!isNaN(chosen)){
@@ -770,12 +729,10 @@ overWrap.style.display='none';
 // === SUMMARY STRIP ===
 function updateStrip(){
 [1,2,3].forEach(n=>{
-const f=rv['s'+n+'-flex']||'-';
-const c=rv['s'+n+'-cont']||'-';
-const b=rv['s'+n+'-ben']||'-';
-document.getElementById('ss-s'+n).textContent='Seg'+n+': F'+f+' C'+c+' B'+b;
+const r=rv['s'+n+'-resp']||'-';
+document.getElementById('ss-s'+n).textContent='Seg'+n+': '+r;
 });
-document.getElementById('ss-traj').textContent='Traj: '+(rv['traj-pattern']||'--');
+document.getElementById('ss-traj').textContent='';
 document.getElementById('ss-score').textContent='Score: '+(rv['score']||'--');
 document.getElementById('ss-conf').textContent='Conf: '+(rv['conf']||'--');
 }
@@ -830,7 +787,7 @@ updateStrip();
 function buildTxt(){
 let segTxt='';
 [1,2,3].forEach(n=>{
-segTxt+='  Segment '+n+':\n    ABCD domain: '+(rv['s'+n+'-domain']||'-')+'\n    Function: '+(rv['s'+n+'-func']||'-')+'\n    Dir: '+(rv['s'+n+'-dir']||'-')+'\n';
+segTxt+='  Segment '+n+':\n    ABCD domain: '+(rv['s'+n+'-domain']||'-')+'\n';
 for(let m=1;m<=kmCount[n];m++){
 const pre='s'+n+'-km-'+m;
 const ci=v('f-'+pre+'-ci');
@@ -839,16 +796,15 @@ if(ci||shift!=='-'){
 segTxt+='    Moment '+m+': '+ci+' | Shift: '+shift+'\n';
 }
 }
-segTxt+='    Synthesis: F='+(rv['s'+n+'-flex']||'-')+' C='+(rv['s'+n+'-cont']||'-')+' B='+(rv['s'+n+'-ben']||'-')+'\n    Opportunity eval: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';
+segTxt+='    Responsiveness: '+(rv['s'+n+'-resp']||'-')+'\n    Opportunity: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';
 if(n<3)segTxt+='  Between-seg adjustment '+n+'->'+(n+1)+': '+v('f-cio-'+n+'to'+(n+1))+'\n';
 });
-return['PHASE 0a v2: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),
+return['PHASE 0a v3: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),
 'Annotator: '+v('f-name'),'Date: '+v('f-date'),'',
 '1. SEGMENT EVALUATIONS\n'+segTxt,
 '2. SYNTHESIS',
-'Trajectory pattern: '+(rv['traj-pattern']||'-'),
 'Trajectory summary: '+v('f-traj-summary'),
-'Computed avg (F/C/B): '+(document.getElementById('cs-avg').textContent||'-'),
+'Computed avg (Resp): '+(document.getElementById('cs-avg').textContent||'-'),
 'Final score: '+(rv['score']||'-'),
 'Override justification: '+v('f-override-why'),
 '',

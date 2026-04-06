@@ -215,7 +215,7 @@ Additional evaluation considerations:<br>
 <!-- STEP 1: SEGMENT EVALUATIONS (bottom-up) -->
 <div class="step" id="s2">
 <h2><span class="sn">1</span> Segment-Level Evaluation</h2>
-<p class="sub">Read each segment. Identify 1-3 key therapist interventions (MIND-coded EMERG). For each, note patient state and what shifted. Then rate segment responsiveness.</p>
+<p class="sub">For each segment: identify key therapist interventions, note what they targeted and what shifted before/after, then rate segment responsiveness.</p>
 
 <div class="seg-eval" id="eval-1">
 <h3 onclick="showSeg(1,document.querySelectorAll('.seg-tabs button')[1])">Segment 1</h3>
@@ -225,16 +225,18 @@ Additional evaluation considerations:<br>
 </div>
 
 <div class="km-wrap" id="km-wrap-1">
-<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions; note patient state and what shifted)</span></div>
+<div class="km-wrap-label">Key Interventions <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 per segment; start from what the therapist did)</span></div>
 <div id="km-list-1">
 <div class="km-block" data-km="s1-km-1">
-<span class="km-num">Moment 1</span>
-<div class="km-row"><label>What happened:</label><input type="text" id="f-s1-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>
-<div class="km-row"><label>Shift:</label>
-<div class="bg" data-field="s1-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>
+<span class="km-num">Intervention 1</span>
+<div class="km-row"><label>What the therapist did:</label><input type="text" id="f-s1-km-1-int" style="flex:1;font-size:.7rem" placeholder="e.g., Empathy: validated the patient's anger as a normal need"></div>
+<div class="km-row"><label>Targeted:</label><input type="text" id="f-s1-km-1-tgt" style="flex:1;font-size:.7rem" placeholder="Which self-state or ABCD domain? Adaptive or maladaptive layer?"></div>
+<div class="km-row"><label>Before:</label><input type="text" id="f-s1-km-1-bef" style="flex:1;font-size:.7rem" placeholder="Patient state before the intervention"></div>
+<div class="km-row"><label>After:</label><input type="text" id="f-s1-km-1-aft" style="flex:1;font-size:.7rem" placeholder="What shifted (or didn't)">
+<div class="bg" data-field="s1-km-1-shift" style="display:inline-flex;margin:0;margin-left:.3rem"><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Backward</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Forward</button></div></div>
 </div>
 </div>
-<button class="km-add" onclick="addMoment(1)">+ Add moment</button>
+<button class="km-add" onclick="addMoment(1)">+ Add intervention</button>
 </div>
 
 <label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis</label>
@@ -258,16 +260,18 @@ Additional evaluation considerations:<br>
 </div>
 
 <div class="km-wrap" id="km-wrap-2">
-<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions; note patient state and what shifted)</span></div>
+<div class="km-wrap-label">Key Interventions <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 per segment; start from what the therapist did)</span></div>
 <div id="km-list-2">
 <div class="km-block" data-km="s2-km-1">
-<span class="km-num">Moment 1</span>
-<div class="km-row"><label>What happened:</label><input type="text" id="f-s2-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>
-<div class="km-row"><label>Shift:</label>
-<div class="bg" data-field="s2-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>
+<span class="km-num">Intervention 1</span>
+<div class="km-row"><label>What the therapist did:</label><input type="text" id="f-s2-km-1-int" style="flex:1;font-size:.7rem" placeholder="e.g., Meaning-making: connected patient's volatility to relational pattern"></div>
+<div class="km-row"><label>Targeted:</label><input type="text" id="f-s2-km-1-tgt" style="flex:1;font-size:.7rem" placeholder="Which self-state or ABCD domain? Adaptive or maladaptive layer?"></div>
+<div class="km-row"><label>Before:</label><input type="text" id="f-s2-km-1-bef" style="flex:1;font-size:.7rem" placeholder="Patient state before the intervention"></div>
+<div class="km-row"><label>After:</label><input type="text" id="f-s2-km-1-aft" style="flex:1;font-size:.7rem" placeholder="What shifted (or didn't)">
+<div class="bg" data-field="s2-km-1-shift" style="display:inline-flex;margin:0;margin-left:.3rem"><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Backward</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Forward</button></div></div>
 </div>
 </div>
-<button class="km-add" onclick="addMoment(2)">+ Add moment</button>
+<button class="km-add" onclick="addMoment(2)">+ Add intervention</button>
 </div>
 
 <label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis</label>
@@ -291,16 +295,18 @@ Additional evaluation considerations:<br>
 </div>
 
 <div class="km-wrap" id="km-wrap-3">
-<div class="km-wrap-label">Key Moments <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 MIND-coded interventions; note patient state and what shifted)</span></div>
+<div class="km-wrap-label">Key Interventions <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(1-3 per segment; start from what the therapist did)</span></div>
 <div id="km-list-3">
 <div class="km-block" data-km="s3-km-1">
-<span class="km-num">Moment 1</span>
-<div class="km-row"><label>What happened:</label><input type="text" id="f-s3-km-1-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>
-<div class="km-row"><label>Shift:</label>
-<div class="bg" data-field="s3-km-1-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>
+<span class="km-num">Intervention 1</span>
+<div class="km-row"><label>What the therapist did:</label><input type="text" id="f-s3-km-1-int" style="flex:1;font-size:.7rem" placeholder="e.g., Exploration: asked if vulnerability could be communicated to partner"></div>
+<div class="km-row"><label>Targeted:</label><input type="text" id="f-s3-km-1-tgt" style="flex:1;font-size:.7rem" placeholder="Which self-state or ABCD domain? Adaptive or maladaptive layer?"></div>
+<div class="km-row"><label>Before:</label><input type="text" id="f-s3-km-1-bef" style="flex:1;font-size:.7rem" placeholder="Patient state before the intervention"></div>
+<div class="km-row"><label>After:</label><input type="text" id="f-s3-km-1-aft" style="flex:1;font-size:.7rem" placeholder="What shifted (or didn't)">
+<div class="bg" data-field="s3-km-1-shift" style="display:inline-flex;margin:0;margin-left:.3rem"><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Backward</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Forward</button></div></div>
 </div>
 </div>
-<button class="km-add" onclick="addMoment(3)">+ Add moment</button>
+<button class="km-add" onclick="addMoment(3)">+ Add intervention</button>
 </div>
 
 <label style="font-size:.68rem;margin-top:.5rem;color:#475569;font-style:italic">Segment synthesis</label>
@@ -643,10 +649,12 @@ function kmHtml(seg,n,showRemove){
 const pre='s'+seg+'-km-'+n;
 let h='<div class="km-block" data-km="'+pre+'">';
 if(showRemove)h+='<span class="km-remove" onclick="removeMoment('+seg+','+n+')">\u2715</span>';
-h+='<span class="km-num">Moment '+n+'</span>';
-h+='<div class="km-row"><label>What happened:</label><input type="text" id="f-'+pre+'-ci" style="flex:1;font-size:.7rem" placeholder="Patient state (adaptive/maladaptive) + therapist action (EMERG) + what shifted"></div>';
-h+='<div class="km-row"><label>Shift:</label>';
-h+='<div class="bg" data-field="'+pre+'-shift" style="display:inline-flex;margin:0"><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Backward</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Flat</button><button onclick="sel(this)" style="font-size:.62rem;padding:.15rem .4rem">Forward</button></div></div>';
+h+='<span class="km-num">Intervention '+n+'</span>';
+h+='<div class="km-row"><label>What the therapist did:</label><input type="text" id="f-'+pre+'-int" style="flex:1;font-size:.7rem" placeholder="e.g., Empathy / Meaning-making / Exploration + brief description"></div>';
+h+='<div class="km-row"><label>Targeted:</label><input type="text" id="f-'+pre+'-tgt" style="flex:1;font-size:.7rem" placeholder="Which self-state or ABCD domain? Adaptive or maladaptive layer?"></div>';
+h+='<div class="km-row"><label>Before:</label><input type="text" id="f-'+pre+'-bef" style="flex:1;font-size:.7rem" placeholder="Patient state before the intervention"></div>';
+h+='<div class="km-row"><label>After:</label><input type="text" id="f-'+pre+'-aft" style="flex:1;font-size:.7rem" placeholder="What shifted (or didn\'t)">';
+h+='<div class="bg" data-field="'+pre+'-shift" style="display:inline-flex;margin:0;margin-left:.3rem"><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Backward</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Flat</button><button onclick="sel(this)" style="font-size:.6rem;padding:.12rem .35rem">Forward</button></div></div>';
 h+='</div>';
 return h;
 }
@@ -790,10 +798,17 @@ let segTxt='';
 segTxt+='  Segment '+n+':\n    ABCD domain: '+(rv['s'+n+'-domain']||'-')+'\n';
 for(let m=1;m<=kmCount[n];m++){
 const pre='s'+n+'-km-'+m;
-const ci=v('f-'+pre+'-ci');
+const int=v('f-'+pre+'-int');
+const tgt=v('f-'+pre+'-tgt');
+const bef=v('f-'+pre+'-bef');
+const aft=v('f-'+pre+'-aft');
 const shift=rv[pre+'-shift']||'-';
-if(ci||shift!=='-'){
-segTxt+='    Moment '+m+': '+ci+' | Shift: '+shift+'\n';
+if(int||tgt||bef||aft||shift!=='-'){
+segTxt+='    Intervention '+m+':\n';
+segTxt+='      Did: '+int+'\n';
+segTxt+='      Targeted: '+tgt+'\n';
+segTxt+='      Before: '+bef+'\n';
+segTxt+='      After: '+aft+' ['+shift+']\n';
 }
 }
 segTxt+='    Responsiveness: '+(rv['s'+n+'-resp']||'-')+'\n    Opportunity: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';

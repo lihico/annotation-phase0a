@@ -200,12 +200,16 @@ Additional evaluation considerations:<br>
 <div><label style="margin-top:0">Name</label><input type="text" id="f-name" placeholder="e.g., Ilay"></div>
 <div><label style="margin-top:0">Date</label><input type="text" id="f-date" placeholder="YYYY-MM-DD"></div>
 </div>
+
+<label style="margin-top:.5rem;font-size:.78rem">Therapeutic task <span style="font-weight:400;color:#94a3b8;font-size:.66rem">(fill after reading the full transcript)</span></label>
+<input type="text" id="f-task" style="width:100%;font-size:.72rem" placeholder="What does this patient need from this session? What is the core therapeutic challenge here?">
+<div style="font-size:.64rem;color:#94a3b8;margin-top:.1rem">This anchors your evaluation: a responsive therapist is one whose actions fit THIS patient's task.</div>
 <details style="margin-top:.4rem">
 <summary>Rating scales and ground rules</summary>
 <div style="font-size:.74rem;line-height:1.55;margin-top:.2rem">
 <strong>Segment Responsiveness (-3 to +3):</strong> -3=counter-responsive (intervention worsened fit), -2=clearly non-responsive, -1=slightly off, 0=neutral/generic, +1=somewhat responsive, +2=clearly responsive, +3=optimally responsive (fitted, contingent, beneficial).<br>
 <strong>Key-Moment Shift:</strong> Backward (patient closed, withdrew, became more rigid), Flat (no change), Forward (new material, deepening, need articulation).<br>
-<strong>Opportunity:</strong> Detected &amp; acted / Detected &amp; missed / Not detected / No clear opportunity.<br>
+<strong>Opportunity:</strong> Detected &amp; acted / Detected &amp; missed / Not detected / No clear opportunity. Opportunities can be <em>patient-created</em> (a signal of readiness) or <em>therapist-created</em> (a probe testing the TZPD boundary).<br>
 <strong>ABCD domain:</strong> Which MIND patient domain(s) the therapist's intervention targeted (multi-select).<br><br>
 <strong>Ground rules:</strong> Ground claims in transcript and/or MIND codes. Patient self-state movement is the primary reference point. Flag uncertainty explicitly. Distinguish content (what was discussed) from process (how it was held).
 </div>
@@ -216,6 +220,17 @@ Additional evaluation considerations:<br>
 <div class="step" id="s2">
 <h2><span class="sn">1</span> Segment-Level Evaluation</h2>
 <p class="sub">For each segment: identify key therapist interventions and what shifted. Then synthesize: which domains were targeted, and how responsive was the therapist overall?</p>
+
+<details style="margin-bottom:.5rem">
+<summary style="font-size:.68rem;font-weight:600;cursor:pointer;color:#475569">Quick reference: What counts as a fitted response? (click to expand)</summary>
+<div style="font-size:.66rem;line-height:1.5;margin-top:.3rem;color:#475569;columns:2;column-gap:1rem">
+<div style="break-inside:avoid;margin-bottom:.3rem"><b>Affect:</b> Global distress → explore and contain. Adaptive emotion emerging → deepen. Maladaptive shame/fear → contain before challenging. Secondary anger → redirect to primary emotion.</div>
+<div style="break-inside:avoid;margin-bottom:.3rem"><b>Behavior:</b> Withdrawal → metacommunicate. Confrontation → non-defensive response. Resistance → step back, don't push.</div>
+<div style="break-inside:avoid;margin-bottom:.3rem"><b>Cognition:</b> Self-criticism → empathy first. Emerging insight → scaffold. Rigid thinking → work at assimilation level.</div>
+<div style="break-inside:avoid;margin-bottom:.3rem"><b>Desire:</b> Unmet needs → actively explore. Avoidance + relatedness needs → graduated approach. Autonomy needs → collaborative stance.</div>
+<div style="break-inside:avoid;margin-bottom:.3rem"><b>Process:</b> Low movement → patience, not escalation. Off-track → deviate from protocol. Stage-matched interventions outperform non-matched (d = 2.80). Function &gt; quality.</div>
+</div>
+</details>
 
 <div class="seg-eval" id="eval-1">
 <h3 onclick="showSeg(1,document.querySelectorAll('.seg-tabs button')[1])">Segment 1</h3>
@@ -246,11 +261,11 @@ Additional evaluation considerations:<br>
 <div class="bg" data-field="s1-opp-eval">
 <button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">No clear opportunity</button>
 </div>
-<input type="text" id="f-s1-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="What signal did the patient show? How did the therapist respond (or not)?">
+<input type="text" id="f-s1-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="Patient signal OR therapist-initiated probe? What was it, and what happened?">
 </div>
 
-<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>Between-segment adjustment:</b> Was the therapist's approach in Segment 2 adjusted based on what happened in Segment 1?</div>
-<input type="text" id="f-cio-1to2" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Patient opened up but therapist continued same approach / Therapist shifted to exploration after patient showed readiness">
+<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>Seg 1 → Seg 2 adjustment:</b> Given the shift(s) you noted in Segment 1, did the therapist adapt their approach?</div>
+<input type="text" id="f-cio-1to2" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="What should have changed? Did it? (e.g., patient showed readiness → did therapist deepen? patient withdrew → did therapist soften?)">
 
 <div class="seg-eval" id="eval-2">
 <h3 onclick="showSeg(2,document.querySelectorAll('.seg-tabs button')[2])">Segment 2</h3>
@@ -281,11 +296,11 @@ Additional evaluation considerations:<br>
 <div class="bg" data-field="s2-opp-eval">
 <button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">No clear opportunity</button>
 </div>
-<input type="text" id="f-s2-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="What signal did the patient show? How did the therapist respond (or not)?">
+<input type="text" id="f-s2-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="Patient signal OR therapist-initiated probe? What was it, and what happened?">
 </div>
 
-<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>Between-segment adjustment:</b> Was the therapist's approach in Segment 3 adjusted based on what happened in Segment 2?</div>
-<input type="text" id="f-cio-2to3" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="e.g., Alliance dipped but therapist did not shift / Therapist responded to rupture with repair">
+<div style="background:#f0f7ff;border-left:3px solid #93c5fd;padding:.35rem .6rem;margin:.3rem 0;font-size:.68rem;color:#475569;border-radius:0 4px 4px 0"><b>Seg 2 → Seg 3 adjustment:</b> Given the shift(s) you noted in Segment 2, did the therapist adapt their approach?</div>
+<input type="text" id="f-cio-2to3" style="width:100%;font-size:.72rem;margin-bottom:.4rem" placeholder="What should have changed? Did it? (e.g., alliance dipped → did therapist repair? progress continued → did therapist deepen or consolidate?)">
 
 <div class="seg-eval" id="eval-3">
 <h3 onclick="showSeg(3,document.querySelectorAll('.seg-tabs button')[3])">Segment 3</h3>
@@ -316,7 +331,7 @@ Additional evaluation considerations:<br>
 <div class="bg" data-field="s3-opp-eval">
 <button onclick="sel(this)">Detected &amp; acted</button><button onclick="sel(this)">Detected &amp; missed</button><button onclick="sel(this)">Not detected</button><button onclick="sel(this)">No clear opportunity</button>
 </div>
-<input type="text" id="f-s3-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="What signal did the patient show? How did the therapist respond (or not)?">
+<input type="text" id="f-s3-opp-note" style="width:100%;font-size:.72rem;margin-top:.15rem" placeholder="Patient signal OR therapist-initiated probe? What was it, and what happened?">
 </div>
 
 <!-- STEP 2: PROCESS NARRATIVE (scaffolded by Step 1) -->
@@ -326,37 +341,37 @@ Additional evaluation considerations:<br>
 Use your key-intervention observations from Step 1 to tell the story. If Step 1 was done well, these fields should almost fill themselves.
 </div>
 
-<label style="font-size:.7rem">1. Patient trajectory</label>
+<label style="font-size:.7rem">1. Patient trajectory <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(from your Before/After observations)</span></label>
 <div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
 <span style="font-size:.68rem;color:#64748b;white-space:nowrap">Patient moved from</span>
-<input type="text" id="f-pe-from" style="flex:1;font-size:.72rem" placeholder="e.g., guarded self-criticism">
+<input type="text" id="f-pe-from" style="flex:1;font-size:.72rem" placeholder="Seg 1 starting state (from your 'Before' fields)">
 <span style="font-size:.68rem;color:#64748b;white-space:nowrap">to</span>
-<input type="text" id="f-pe-to" style="flex:1;font-size:.72rem" placeholder="e.g., tentative vulnerability">
+<input type="text" id="f-pe-to" style="flex:1;font-size:.72rem" placeholder="Seg 3 ending state (from your 'After' fields)">
 </div>
 
-<label style="font-size:.7rem">2. Key interventions and transitions</label>
-<textarea id="f-pe-transitions" class="sm" placeholder="Summarize the main interventions across all segments. What did each target? What shifted at each point? (Reference your Step 1 observations)"></textarea>
+<label style="font-size:.7rem">2. Key interventions and transitions <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(connect your Step 1 interventions into a story)</span></label>
+<textarea id="f-pe-transitions" class="sm" placeholder="Thread the interventions you identified: Seg 1 the therapist did X targeting Y → Seg 2 shifted to Z because → Seg 3..."></textarea>
 
-<label style="font-size:.7rem">3. Best-fitted intervention</label>
+<label style="font-size:.7rem">3. Best-fitted intervention <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(the one with the clearest Forward shift)</span></label>
 <div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
 <span style="font-size:.68rem;color:#64748b;white-space:nowrap">Seg</span>
 <div class="bg" data-field="pe-best-seg" style="display:inline-flex;margin:0">
 <button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">1</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">2</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">3</button>
 </div>
-<input type="text" id="f-pe-best" style="flex:1;font-size:.72rem" placeholder="What the therapist did, what the patient was showing, and what resulted">
+<input type="text" id="f-pe-best" style="flex:1;font-size:.72rem" placeholder="Copy or refine from your Step 1 intervention that showed best fit">
 </div>
 
-<label style="font-size:.7rem">4. Weakest-fitted intervention</label>
+<label style="font-size:.7rem">4. Weakest-fitted intervention <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(missed opportunity or poorest fit)</span></label>
 <div style="display:flex;align-items:center;gap:.3rem;margin-bottom:.2rem">
 <span style="font-size:.68rem;color:#64748b;white-space:nowrap">Seg</span>
 <div class="bg" data-field="pe-weak-seg" style="display:inline-flex;margin:0">
 <button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">1</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">2</button><button onclick="sel(this)" style="padding:.15rem .5rem;font-size:.68rem">3</button>
 </div>
-<input type="text" id="f-pe-weak" style="flex:1;font-size:.72rem" placeholder="What the therapist did, what the patient was showing, and what resulted">
+<input type="text" id="f-pe-weak" style="flex:1;font-size:.72rem" placeholder="Copy or refine from your Step 1 intervention that showed weakest fit">
 </div>
 
-<label style="font-size:.7rem">5. Overall assessment (one sentence)</label>
-<input type="text" id="f-pe-overall" style="width:100%;font-size:.72rem" placeholder="The therapist [tracked / partially tracked / missed] the patient's [trajectory / need / shift] because [reason]">
+<label style="font-size:.7rem">5. Overall assessment <span style="font-weight:400;color:#94a3b8;font-size:.62rem">(one sentence; ties back to the therapeutic task)</span></label>
+<input type="text" id="f-pe-overall" style="width:100%;font-size:.72rem" placeholder="Given the therapeutic task (Step 0), the therapist [tracked / partially tracked / missed] the patient's [need] because [reason]">
 
 </div>
 
@@ -806,8 +821,9 @@ segTxt+='      After: '+aft+' ['+shift+']\n';
 segTxt+='    Responsiveness: '+(rv['s'+n+'-resp']||'-')+'\n    Opportunity: '+(rv['s'+n+'-opp-eval']||'-')+' ('+v('f-s'+n+'-opp-note')+')\n';
 if(n<3)segTxt+='  Between-seg adjustment '+n+'->'+(n+1)+': '+v('f-cio-'+n+'to'+(n+1))+'\n';
 });
-return['PHASE 0a v4: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),
-'Annotator: '+v('f-name'),'Date: '+v('f-date'),'',
+return['PHASE 0a v5: C-I-O RESPONSIVENESS ANNOTATION','Session: EU0214_8 | Working Phase','='.repeat(50),
+'Annotator: '+v('f-name'),'Date: '+v('f-date'),
+'Therapeutic task: '+v('f-task'),'',
 '1. SEGMENT EVALUATIONS\n'+segTxt,
 '2. PROCESS NARRATIVE',
 '  1. Patient trajectory: from ['+v('f-pe-from')+'] to ['+v('f-pe-to')+']',
